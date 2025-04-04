@@ -4,17 +4,51 @@
  * Bootstraps Vuetify and other plugins then mounts the App`
  */
 
-// Plugins
-import { registerPlugins } from '@/plugins'
+// Composables
+import { createApp } from 'vue'
 
 // Components
 import App from './App.vue'
 
-// Composables
-import { createApp } from 'vue'
+// Router
+import router from './router'
 
-const app = createApp(App)
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import '@mdi/font/css/materialdesignicons.css'
 
-registerPlugins(app)
+const vuetify = createVuetify({
+  components,
+  directives,
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    },
+  },
+  theme: {
+    themes: {
+      light: {
+        dark: true,
+        colors: {
+          primary: '#0B1D51',
+          secondary: '#5E35B1',
+          accent: '#4FC3F7',
+          'accent-alt': '#FF4081',
+          dark: '#010A26',
+          light: '#E1E5F2',
+        }
+      },
+    },
+  },
+})
 
-app.mount('#app')
+createApp(App)
+  .use(router)
+  .use(vuetify)
+  .mount('#app')

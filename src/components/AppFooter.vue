@@ -1,79 +1,197 @@
 <template>
-  <v-footer height="40" app>
-    <a
-      v-for="item in items"
-      :key="item.title"
-      :href="item.href"
-      :title="item.title"
-      class="d-inline-block mx-2 social-link"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <v-icon
-        :icon="item.icon"
-        :size="item.icon === '$vuetify' ? 24 : 16"
-      />
-    </a>
-
-    <div
-      class="text-caption text-disabled"
-      style="position: absolute; right: 16px;"
-    >
-      &copy; 2016-{{ (new Date()).getFullYear() }} <span class="d-none d-sm-inline-block">Vuetify, LLC</span>
-      —
-      <a
-        class="text-decoration-none on-surface"
-        href="https://vuetifyjs.com/about/licensing/"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        MIT License
-      </a>
-    </div>
+  <v-footer class="galaxy-footer">
+    <v-container>
+      <v-row>
+        <v-col cols="12" md="4" class="mb-6 mb-md-0">
+          <div class="d-flex align-center mb-4">
+            <v-avatar size="42" class="mr-2 gradient-avatar">
+              <v-icon icon="mdi-galaxy" color="white"></v-icon>
+            </v-avatar>
+            <span class="text-h5 font-weight-bold">Bebanova</span>
+          </div>
+          
+          <p class="mb-4">
+            Exploramos el cosmos digital para transformar ideas innovadoras en soluciones tecnológicas de vanguardia que impulsan el crecimiento y éxito de nuestros clientes.
+          </p>
+          
+          <div class="social-links d-flex gap-2">
+            <v-btn
+              v-for="icon in socialIcons"
+              :key="icon"
+              :icon="icon"
+              variant="text"
+              color="light"
+              class="social-icon"
+            ></v-btn>
+          </div>
+        </v-col>
+        
+        <v-col cols="12" sm="6" md="2">
+          <h3 class="text-subtitle-1 font-weight-bold mb-4">Servicios</h3>
+          <v-list density="compact" class="footer-links pa-0">
+            <v-list-item
+              v-for="(link, i) in serviceLinks"
+              :key="i"
+              :title="link.title"
+              :href="link.url"
+              density="compact"
+              class="px-0"
+            ></v-list-item>
+          </v-list>
+        </v-col>
+        
+        <v-col cols="12" sm="6" md="2">
+          <h3 class="text-subtitle-1 font-weight-bold mb-4">Empresa</h3>
+          <v-list density="compact" class="footer-links pa-0">
+            <v-list-item
+              v-for="(link, i) in companyLinks"
+              :key="i"
+              :title="link.title"
+              :href="link.url"
+              density="compact"
+              class="px-0"
+            ></v-list-item>
+          </v-list>
+        </v-col>
+        
+        <v-col cols="12" sm="6" md="2">
+          <h3 class="text-subtitle-1 font-weight-bold mb-4">Legal</h3>
+          <v-list density="compact" class="footer-links pa-0">
+            <v-list-item
+              v-for="(link, i) in legalLinks"
+              :key="i"
+              :title="link.title"
+              :href="link.url"
+              density="compact"
+              class="px-0"
+            ></v-list-item>
+          </v-list>
+        </v-col>
+        
+        <v-col cols="12" sm="6" md="2">
+          <h3 class="text-subtitle-1 font-weight-bold mb-4">Contacto</h3>
+          <v-list density="compact" class="footer-contact pa-0">
+            <v-list-item
+              prepend-icon="mdi-email"
+              title="info@bebanova.cl"
+              class="px-0"
+            ></v-list-item>
+            <v-list-item
+              prepend-icon="mdi-phone"
+              title="+56 9 1234 5678" 
+              class="px-0"
+            ></v-list-item>
+            <v-list-item
+              prepend-icon="mdi-map-marker"
+              title="Santiago, Chile"
+              class="px-0"
+            ></v-list-item>
+          </v-list>
+        </v-col>
+      </v-row>
+      
+      <v-divider class="my-4 border-opacity-10"></v-divider>
+      
+      <div class="d-flex flex-column flex-md-row align-md-center justify-space-between">
+        <div class="text-body-2 text-center text-md-left mb-3 mb-md-0">
+          &copy; {{ new Date().getFullYear() }} GalaxTech. Todos los derechos reservados.
+        </div>
+        <div class="text-center text-md-right">
+          <v-btn variant="text" size="small" href="#" class="text-caption me-2">Política de Privacidad</v-btn>
+          <v-btn variant="text" size="small" href="#" class="text-caption">Términos de Servicio</v-btn>
+        </div>
+      </div>
+    </v-container>
+    
+    <!-- Efecto de estrellas en el footer -->
+    <div class="stars-effect"></div>
   </v-footer>
 </template>
 
 <script setup>
-  const items = [
-    {
-      title: 'Vuetify Documentation',
-      icon: `$vuetify`,
-      href: 'https://vuetifyjs.com/',
-    },
-    {
-      title: 'Vuetify Support',
-      icon: 'mdi-shield-star-outline',
-      href: 'https://support.vuetifyjs.com/',
-    },
-    {
-      title: 'Vuetify X',
-      icon: ['M2.04875 3.00002L9.77052 13.3248L1.99998 21.7192H3.74882L10.5519 14.3697L16.0486 21.7192H22L13.8437 10.8137L21.0765 3.00002H19.3277L13.0624 9.76874L8.0001 3.00002H2.04875ZM4.62054 4.28821H7.35461L19.4278 20.4308H16.6937L4.62054 4.28821Z'],
-      href: 'https://x.com/vuetifyjs',
-    },
-    {
-      title: 'Vuetify GitHub',
-      icon: `mdi-github`,
-      href: 'https://github.com/vuetifyjs/vuetify',
-    },
-    {
-      title: 'Vuetify Discord',
-      icon: ['M22,24L16.75,19L17.38,21H4.5A2.5,2.5 0 0,1 2,18.5V3.5A2.5,2.5 0 0,1 4.5,1H19.5A2.5,2.5 0 0,1 22,3.5V24M12,6.8C9.32,6.8 7.44,7.95 7.44,7.95C8.47,7.03 10.27,6.5 10.27,6.5L10.1,6.33C8.41,6.36 6.88,7.53 6.88,7.53C5.16,11.12 5.27,14.22 5.27,14.22C6.67,16.03 8.75,15.9 8.75,15.9L9.46,15C8.21,14.73 7.42,13.62 7.42,13.62C7.42,13.62 9.3,14.9 12,14.9C14.7,14.9 16.58,13.62 16.58,13.62C16.58,13.62 15.79,14.73 14.54,15L15.25,15.9C15.25,15.9 17.33,16.03 18.73,14.22C18.73,14.22 18.84,11.12 17.12,7.53C17.12,7.53 15.59,6.36 13.9,6.33L13.73,6.5C13.73,6.5 15.53,7.03 16.56,7.95C16.56,7.95 14.68,6.8 12,6.8M9.93,10.59C10.58,10.59 11.11,11.16 11.1,11.86C11.1,12.55 10.58,13.13 9.93,13.13C9.29,13.13 8.77,12.55 8.77,11.86C8.77,11.16 9.28,10.59 9.93,10.59M14.1,10.59C14.75,10.59 15.27,11.16 15.27,11.86C15.27,12.55 14.75,13.13 14.1,13.13C13.46,13.13 12.94,12.55 12.94,11.86C12.94,11.16 13.45,10.59 14.1,10.59Z'],
-      href: 'https://community.vuetifyjs.com/',
-    },
-    {
-      title: 'Vuetify Reddit',
-      icon: `mdi-reddit`,
-      href: 'https://reddit.com/r/vuetifyjs',
-    },
-  ]
+const socialIcons = [
+  'mdi-linkedin',
+  'mdi-github',
+  'mdi-twitter',
+  'mdi-instagram'
+]
+
+const serviceLinks = [
+  { title: 'Desarrollo Web', url: '#servicios' },
+  { title: 'Aplicaciones Móviles', url: '#servicios' },
+  { title: 'Impresión 3D', url: '#servicios' },
+  { title: 'Capacitaciones', url: '#servicios' }
+]
+
+const companyLinks = [
+  { title: 'Nuestro Proceso', url: '#proceso' },
+  { title: 'Portafolio', url: '#portafolio' },
+  { title: 'Sobre Nosotros', url: '#' },
+  { title: 'Blog', url: '#' }
+]
+
+const legalLinks = [
+  { title: 'Términos y Condiciones', url: '#' },
+  { title: 'Política de Privacidad', url: '#' },
+  { title: 'Cookies', url: '#' }
+]
 </script>
 
-<style scoped lang="sass">
-  .social-link :deep(.v-icon)
-    color: rgba(var(--v-theme-on-background), var(--v-disabled-opacity))
-    text-decoration: none
-    transition: .2s ease-in-out
+<style>
+.galaxy-footer {
+  background: linear-gradient(to top, #010A26 0%, rgba(11, 29, 81, 0.8) 100%);
+  color: var(--light);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+  padding-top: 60px;
+  padding-bottom: 30px;
+}
 
-    &:hover
-      color: rgba(25, 118, 210, 1)
+.gradient-avatar {
+  background: linear-gradient(45deg, var(--accent), var(--secondary));
+}
+
+.social-icon {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-5px);
+  opacity: 0.9;
+}
+
+.footer-links {
+  background: transparent !important;
+}
+
+.footer-links .v-list-item, .footer-contact .v-list-item {
+  min-height: 32px;
+  color: var(--light) !important;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.footer-links .v-list-item:hover, .footer-contact .v-list-item:hover {
+  opacity: 1;
+  transform: translateX(5px);
+}
+
+.footer-contact .v-list-item .v-icon {
+  color: var(--accent);
+}
+
+.stars-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(1px 1px at 25% 25%, rgba(255, 255, 255, 0.6), rgba(0, 0, 0, 0)),
+                    radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.6), rgba(0, 0, 0, 0)),
+                    radial-gradient(1px 1px at 75% 75%, rgba(255, 255, 255, 0.6), rgba(0, 0, 0, 0));
+  background-size: 200px 200px;
+  opacity: 0.1;
+  z-index: -1;
+}
 </style>

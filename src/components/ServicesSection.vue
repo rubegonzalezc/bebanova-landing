@@ -22,7 +22,9 @@
           height="100%"
         >
           <div class="service-icon-container">
-            <v-icon size="x-large" :icon="service.icon" color="accent"></v-icon>
+            <div class="icon-wrapper">
+              <v-icon size="36" :icon="service.icon" color="white"></v-icon>
+            </div>
           </div>
           
           <v-card-title class="text-center">{{ service.title }}</v-card-title>
@@ -34,14 +36,14 @@
                 v-for="(item, i) in service.items" 
                 :key="i"
                 :title="item"
-                prepend-icon="mdi-star"
+                prepend-icon="mdi-star-shooting"
                 class="service-list-item"
               ></v-list-item>
             </v-list>
           </v-card-text>
           
           <v-card-actions class="justify-center pb-4">
-            <v-btn variant="text" color="accent" to="#contacto">
+            <v-btn variant="text" color="accent" to="#contacto" class="cosmic-btn-sm">
               Más información
               <v-icon end>mdi-arrow-right</v-icon>
             </v-btn>
@@ -62,7 +64,7 @@ const forceShow = ref(false)
 const services = [
   {
     title: 'Desarrollo Web',
-    icon: 'mdi-laptop-code',
+    icon: 'mdi-code-tags',
     description: 'Sitios y aplicaciones web a medida, responsivos y optimizados para todos los dispositivos.',
     items: ['Landing Pages', 'E-commerce', 'Sistemas a medida']
   },
@@ -80,9 +82,9 @@ const services = [
   },
   {
     title: 'Capacitaciones',
-    icon: 'mdi-teach',
+    icon: 'mdi-school',
     description: 'Formación técnica especializada para equipos y profesionales que buscan mejorar sus habilidades.',
-    items: ['Desarrollo web y móvil', 'Diseño 3D', 'Tecnologías emergentes']
+    items: ['Inteligencia Artificial', 'Diseño 3D', 'Realidad Virtual']
   }
 ]
 
@@ -125,6 +127,19 @@ onMounted(() => {
   opacity: 0;
   transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   color: #E1E5F2; /* Color claro para el texto */
+  overflow: hidden;
+  position: relative;
+}
+
+.service-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(79, 195, 247, 0.05), transparent);
+  pointer-events: none;
 }
 
 .service-card.show {
@@ -152,11 +167,43 @@ onMounted(() => {
   margin-bottom: 10px;
 }
 
-.service-icon-container .v-icon {
-  padding: 16px;
-  background: rgba(79, 195, 247, 0.1);
+.icon-wrapper {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-alt));
   border-radius: 50%;
-  box-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
+  box-shadow: 0 0 25px rgba(79, 195, 247, 0.5);
+  position: relative;
+  overflow: visible;
+}
+
+.icon-wrapper::after {
+  content: "";
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 1px solid rgba(79, 195, 247, 0.3);
+  animation: pulse-ring 2s infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
 }
 
 .service-list-item {
@@ -165,8 +212,9 @@ onMounted(() => {
 }
 
 .service-list-item .v-icon {
-  color: var(--accent-alt) !important; /* Forzar el color del ícono */
+  color: var(--accent) !important; /* Forzar el color del ícono */
   font-size: 16px;
+  margin-right: 8px;
 }
 
 /* Asegurar que los íconos y el texto en los ítems de la lista tengan el color correcto */
@@ -189,6 +237,42 @@ onMounted(() => {
 
 .v-list.bg-transparent .v-list-item {
   background-color: transparent !important;
+}
+
+.cosmic-btn-sm {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.cosmic-btn-sm::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  background: linear-gradient(45deg, var(--accent), var(--accent-alt));
+  background-size: 400%;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cosmic-btn-sm:hover {
+  transform: translateY(-2px);
+}
+
+.cosmic-btn-sm:hover::before {
+  opacity: 0.3;
+  animation: cosmic-glow 3s infinite;
+}
+
+@keyframes cosmic-glow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Mejorar la visualización en dispositivos móviles */

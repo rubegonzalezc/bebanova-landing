@@ -1,0 +1,70 @@
+// Variables
+$black: #000000;
+$dark-blue: #1a1a2e;
+$blue: #4169e1;
+$light-blue: #80b3ff;
+$white: #ffffff;
+$gray: #f5f5f5;
+$transition: all 0.3s ease-in-out;
+
+// Keyframes
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeInService {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInStep {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Algunos estilos generales
+h1, h2, h3, h4 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: 2.8rem;
+}
+
+h2 {
+  font-size: 2.2rem;
+  text-align: center;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+// Otros estilos globales
+section {
+  padding: 100px 0;
+}

@@ -43,7 +43,15 @@
           <v-col cols="12" md="5" class="d-none d-md-block">
             <div class="cta-image">
               <div class="image-wrapper">
+                <ModelViewer
+        :modelSources="[`/3D/source/ender3.glb`,`/3D/source/quest3.glb`,`/3D/source/brain.glb`,`/3D/source/text.glb`]"
+        :previewImg="[`/ender3.png`,`/quest3.png`,`/AI.png`,`/code.png`]"
+        :enableScreenshot="false"
+        :modelDefaultSize="1.1"
+        class="model-viewer-masked"
+      />
                 <img src="@/assets/img/logo.png" alt="Bebanova Logo" class="main-image">
+               
                 <div class="shape shape-1"></div>
                 <div class="shape shape-2"></div>
                 <div class="tech-badge tech-badge-1">
@@ -64,8 +72,12 @@
   </template>
   
   <script>
+  import ModelViewer from '../components/ModelViewer.vue'
   export default {
     name: 'HeroSection',
+    components: {
+    ModelViewer
+  },
     data() {
       return {
         features: [
@@ -159,6 +171,14 @@
   }
   
   // Estilos para la imagen y animaciones
+  .model-viewer-masked{
+  z-index: 10;
+  -webkit-mask-image: radial-gradient(circle, rgba(65, 105, 225, 1) 70%, rgba(0, 0, 0, 0) 90%);
+  mask-image: radial-gradient(circle, rgba(65, 105, 225, 1) 70%, rgba(0, 0, 0, 0) 90%);
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  opacity: 1;
+  }
   
   .main-image {
     width: 350px;

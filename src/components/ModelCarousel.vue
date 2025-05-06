@@ -63,7 +63,7 @@ const props = defineProps({
   enableScreenshot: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['model-loaded', 'rotation-change', 'model-switch'])
+const emit = defineEmits(['model-loaded', 'rotation-change', 'model-switch', 'model-changed'])
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const containerRef = ref<HTMLDivElement | null>(null)
@@ -768,6 +768,7 @@ const switchToModel = (requestedIndex: number) => {
 };
 
 const nextModel = () => {
+    
     if (!isFullyLoaded.value || modelData.length === 0) return;
     const numValidEntries = modelData.filter(d => d !== null).length;
     if (numValidEntries === 0) return;
@@ -788,9 +789,11 @@ const nextModel = () => {
         switchToModel(currentValidIndex + 1); 
         resetAutoSwitch(); 
     }
+    emit('model-changed', currentModelIndex.value);
 };
 
 const previousModel = () => {
+    
     if (!isFullyLoaded.value || modelData.length === 0) return;
     const numValidEntries = modelData.filter(d => d !== null).length;
     if (numValidEntries === 0) return;
@@ -811,6 +814,7 @@ const previousModel = () => {
         switchToModel(currentValidIndex - 1); 
         resetAutoSwitch(); 
     }
+    emit('model-changed', currentModelIndex.value);
 };
 
 const startAnimationLoop = () => {

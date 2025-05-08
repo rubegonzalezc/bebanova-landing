@@ -58,7 +58,7 @@ const props = defineProps({
   animationSpeed: { type: Number, default: 0.08 },
   curveRadius: { type: Number, default: 5 },
   angleSeparation: { type: Number, default: 25 },
-  scaleMultiplier: { type: Number, default: 0.5 }, 
+  scaleMultiplier: { type: Number, default: 0.01 }, 
   rotationSensitivity: { type: Number, default: 2.5 }, 
   enableScreenshot: { type: Boolean, default: false },
 })
@@ -181,10 +181,10 @@ const animate = () => {
                 finalTargetScale.set(boostedSize, boostedSize, boostedSize);
             }
 
-            if (!currentObject.scale.equals(finalTargetScale)) {
-                currentObject.scale.lerp(finalTargetScale, 0.1); 
-                if (currentObject.scale.distanceTo(finalTargetScale) < 0.001) {
-                    currentObject.scale.copy(finalTargetScale);
+            if (!currentObject.scale.equals(data.targetScale)) {
+                currentObject.scale.lerp(data.targetScale, props.animationSpeed);
+                if (currentObject.scale.distanceTo(data.targetScale) < 0.001) {
+                    currentObject.scale.copy(data.targetScale);
                 }
                 frameNeedsRender = true;
             }
@@ -388,59 +388,55 @@ const initThree = () => {
 }
 
 const loadAllModels = async () => {
-  if (isLoadingModels.value) {
-    console.warn("Model loading already in progress. Skipping new request.");
-    return;
-  }
-  if (!scene || !camera || !isSetupComplete.value) {
-      console.warn("Scene/Camera not ready, cannot load models yet.");
-      return; 
-  }
+    if (isLoadingModels.value) {
+        console.warn("Model loading already in progress. Skipping new request.");
+        return;
+    }
+    if (!scene || !camera || !isSetupComplete.value) {
+        console.warn("Scene/Camera not ready, cannot load models yet.");
+        return; 
+    }
 
-  isLoadingModels.value = true;
-  console.log("Starting model load process...");
+    isLoadingModels.value = true;
+    console.log("Starting model load process...");
 
-  const wasAnimating = animationFrameId !== null;
-  stopAnimationLoop(); 
-  cleanupModels(); 
-  isFullyLoaded.value = false;
-  loadingProgress.value = 0;
-  modelsLoadedCount.value = 0;
-  const loadedGltfData: ({ gltfScene: THREE.Object3D; index: number } | null)[] = new Array(props.modelSources.length).fill(null);
-  modelData = new Array(props.modelSources.length).fill(null);
-  
-  const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath('/draco/');
-  const loader = new GLTFLoader();
-  loader.setDRACOLoader(dracoLoader);
-  const HDRIloader = new RGBELoader();
-  HDRIloader.load('/sunset.hdr', (texture) => { texture.mapping = THREE.EquirectangularReflectionMapping; scene.environment = texture;}) //scene.background = texture;})
-  
-  const loadPromises = props.modelSources.map((src, index) =>
+    const wasAnimating = animationFrameId !== null;
+    stopAnimationLoop(); 
+    cleanupModels(); 
+    isFullyLoaded.value = false;
+    loadingProgress.value = 0;
+    modelsLoadedCount.value = 0;
+    const loadedGltfData: ({ gltfScene: THREE.Object3D; index: number } | null)[] = new Array(props.modelSources.length).fill(null);
+    modelData = new Array(props.modelSources.length).fill(null);
+    
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('/draco/');
+    const loader = new GLTFLoader();
+    loader.setDRACOLoader(dracoLoader);
+    const HDRIloader = new RGBELoader();
+    HDRIloader.load('/sunset.hdr', (texture) => { texture.mapping = THREE.EquirectangularReflectionMapping; scene.environment = texture;}) //scene.background = texture;})
+    
+    const loadPromises = props.modelSources.map((src, index) =>
         new Promise<void>(async (resolve) => {
             let gltf: any = null;
             let texture: THREE.Texture | null = null;
-          
+
             try {
                 gltf = await loader.loadAsync(src);
-            } catch (error) {               
+            } catch (error) {
                 modelsLoadedCount.value++;
                 loadingProgress.value = (modelsLoadedCount.value / totalModels.value) * 100;
-                resolve(); 
+                resolve();
                 return;
             }
 
-          
             if (props.previewImgs && props.previewImgs[index]) {
                 try {
                     texture = await textureLoader.loadAsync(props.previewImgs[index]);
-                    texture.colorSpace = THREE.SRGBColorSpace; 
+                    texture.colorSpace = THREE.SRGBColorSpace;
                 } catch (texError) {
-                    texture = null; 
+                    texture = null;
                 }
-            } else {
-                console.warn(`No preview image provided for model index ${index}`);
-                texture = null;
             }
 
             const model = gltf.scene;
@@ -448,7 +444,7 @@ const loadAllModels = async () => {
             model.updateMatrixWorld();
             const initialBox = new THREE.Box3().setFromObject(model);
             const center = initialBox.getCenter(new THREE.Vector3());
-            model.position.sub(center); 
+            model.position.sub(center);
             model.scale.set(props.modelDefaultSize, props.modelDefaultSize, props.modelDefaultSize);
             model.updateMatrixWorld();
             const finalBox = new THREE.Box3().setFromObject(model);
@@ -457,18 +453,31 @@ const loadAllModels = async () => {
             let placeholder: THREE.Mesh | null = null;
             if (texture) {
                 const aspectRatio = texture.image ? texture.image.width / texture.image.height : 1;
-                const placeholderHeight = props.modelDefaultSize * 0.8; 
+                const placeholderHeight = props.modelDefaultSize * 0.8;
                 const placeholderWidth = placeholderHeight * aspectRatio;
                 const geometry = new THREE.PlaneGeometry(placeholderWidth, placeholderHeight);
                 const material = new THREE.MeshBasicMaterial({
                     map: texture,
                     transparent: true,
-                    side: THREE.DoubleSide, 
-                    depthWrite: false, 
+                    side: THREE.DoubleSide,
+                    depthWrite: false,
                 });
                 placeholder = new THREE.Mesh(geometry, material);
                 placeholder.rotation.set(0, 0, 0);
+
+                const initialScale = props.modelDefaultSize * (1.0 + props.scaleMultiplier);
+                placeholder.scale.set(initialScale, initialScale, initialScale);
             }
+
+            const targetPosition = new THREE.Vector3();
+            const targetQuaternion = new THREE.Quaternion();
+            const placeholderTargetQuaternion = new THREE.Quaternion();
+
+            const dummy = new THREE.Object3D();
+            dummy.position.copy(targetPosition);
+            dummy.lookAt(camera!.position);
+            targetQuaternion.copy(dummy.quaternion);
+            placeholderTargetQuaternion.copy(dummy.quaternion);
 
             modelData[index] = {
                 model: model,
@@ -476,43 +485,44 @@ const loadAllModels = async () => {
                 texture: texture,
                 size: sizeAtDefaultScale,
                 center: center.clone(),
-                targetPosition: new THREE.Vector3(),
-                targetQuaternion: new THREE.Quaternion(),
-                placeholderTargetQuaternion: new THREE.Quaternion(), 
+                targetPosition: targetPosition,
+                targetQuaternion: targetQuaternion,
+                placeholderTargetQuaternion: placeholderTargetQuaternion,
                 targetScale: new THREE.Vector3(props.modelDefaultSize, props.modelDefaultSize, props.modelDefaultSize),
                 isModelActiveInScene: false,
             };
 
             modelsLoadedCount.value++;
             loadingProgress.value = (modelsLoadedCount.value / totalModels.value) * 100;
-            resolve(); 
+            resolve();
         })
-    ); try {
+    );
+
+    try {
         await Promise.all(loadPromises);
         console.log("All models and placeholders processed.");
 
-        const validModelDataEntries = modelData.filter(data => data !== null && (data.model || data.placeholder)) as Exclude<typeof modelData[number], null>[];
+         const validModelDataEntries = modelData.filter(data => data !== null && (data.model || data.placeholder)) as Exclude<typeof modelData[number], null>[];
+        loadedModels.value = modelData.map(d => d?.model).filter(m => m !== undefined) as THREE.Object3D[];
 
-        loadedModels.value = modelData.map(d => d?.model).filter(m => m !== undefined) as THREE.Object3D[]; 
 
-        if (validModelDataEntries.length > 0) {
+       if (validModelDataEntries.length > 0) {
             console.log(`Found ${validModelDataEntries.length} valid entries (model or placeholder).`);
 
             if (!modelData[currentModelIndex.value]) {
-                 const firstValidIndex = modelData.findIndex(d => d !== null && (d.model || d.placeholder));
-                 currentModelIndex.value = firstValidIndex >= 0 ? firstValidIndex : 0;
-                 console.warn(`Resetting currentModelIndex to first valid index: ${currentModelIndex.value}`);
+                const firstValidIndex = modelData.findIndex(d => d !== null && (d.model || d.placeholder));
+                currentModelIndex.value = firstValidIndex >= 0 ? firstValidIndex : 0;
+                console.warn(`Resetting currentModelIndex to first valid index: ${currentModelIndex.value}`);
             }
+            setupInitialCamera();
+            calculateModelTargets(currentModelIndex.value, true);
 
-            calculateModelTargets(currentModelIndex.value, true); 
             console.log("Targets calculated. Applying initial state and adding to scene...");
 
             modelData.forEach((data, index) => {
-                if (!data || !scene) return; 
+                if (!data || !scene) return;
 
-                 const isCurrent = index === currentModelIndex.value;
-                 const initialScale = isCurrent ? props.modelDefaultSize : props.modelDefaultSize * (1.0 + props.scaleMultiplier); // Approximate side scale
-                 data.targetScale.set(initialScale, initialScale, initialScale); 
+                const isCurrent = index === currentModelIndex.value;
 
                 if (isCurrent && data.model) {
                     data.isModelActiveInScene = true;
@@ -525,14 +535,14 @@ const loadAllModels = async () => {
                 } else if (data.placeholder) {
                     data.isModelActiveInScene = false;
                     data.placeholder.position.copy(data.targetPosition);
-                    data.placeholder.quaternion.copy(data.targetQuaternion); 
-                    data.placeholder.scale.copy(data.targetScale); 
+                    data.placeholder.quaternion.copy(data.placeholderTargetQuaternion);
+                    data.placeholder.scale.copy(data.targetScale);
                     data.placeholder.updateMatrixWorld(true);
                     scene.add(data.placeholder);
                     console.log(`Added placeholder ${index} to scene`);
                 } else if (data.model) {
                     console.warn(`Placeholder missing for index ${index}, adding model instead.`);
-                    data.isModelActiveInScene = true; 
+                    data.isModelActiveInScene = true;
                     data.model.position.copy(data.targetPosition);
                     data.model.quaternion.copy(data.targetQuaternion);
                     data.model.scale.copy(data.targetScale);
@@ -542,8 +552,7 @@ const loadAllModels = async () => {
             });
 
             console.log("Initial objects added to scene.");
-            setupInitialCamera(); 
-            console.log("Camera setup complete.");
+          
             isFullyLoaded.value = true;
             emit('model-loaded');
             console.log("Model loading officially complete (isFullyLoaded=true).");
@@ -556,12 +565,12 @@ const loadAllModels = async () => {
             }
         } else {
             console.warn("No models or placeholders loaded successfully.");
-            isFullyLoaded.value = true; 
-            emit('model-loaded'); 
+            isFullyLoaded.value = true;
+            emit('model-loaded');
         }
     } catch (error) {
         console.error("Error during loading Promise.all:", error);
-        isFullyLoaded.value = true; 
+        isFullyLoaded.value = true;
     } finally {
         isLoadingModels.value = false;
         console.log("Model load process finished.");
@@ -571,30 +580,29 @@ const loadAllModels = async () => {
     }
 };
 
-
 const calculateModelTargets = (centerIndex: number, snap: boolean = false) => {
-  
     if (!scene || modelData.length === 0 || !modelData.some(d => d !== null)) {
         console.warn("calculateModelTargets skipped: Scene not ready or no valid model data.");
         return;
     }
 
     if (centerIndex < 0 || centerIndex >= modelData.length || !modelData[centerIndex]) {
-         console.warn(`calculateModelTargets skipped: Invalid centerIndex ${centerIndex} or no data at index.`);
-         const firstValidIndex = modelData.findIndex(d => d !== null);
-          if (firstValidIndex === -1) return; 
-         centerIndex = firstValidIndex; 
-          console.warn(`Using fallback centerIndex: ${centerIndex}`);
+        console.warn(`calculateModelTargets skipped: Invalid centerIndex ${centerIndex} or no data at index.`);
+        const firstValidIndex = modelData.findIndex(d => d !== null);
+        if (firstValidIndex === -1) return;
+        centerIndex = firstValidIndex;
+        console.warn(`Using fallback centerIndex: ${centerIndex}`);
     }
+
     const numValidEntries = modelData.filter(d => d !== null).length;
     if (numValidEntries === 0) return;
 
     const radius = props.curveRadius;
-    const angleStep = numValidEntries > 1 ? THREE.MathUtils.degToRad(props.angleSeparation) : 0;
+    const mainModelYOffset = 1.0;
 
     let validIndexCounter = -1;
     const centerModelValidIndex = modelData.slice(0, centerIndex + 1).filter(d => d !== null).length - 1;
-    const lookAtPoint = new THREE.Vector3(0, 0, 0); 
+
     modelData.forEach((data, originalIndex) => {
         if (!data) return;
 
@@ -602,42 +610,52 @@ const calculateModelTargets = (centerIndex: number, snap: boolean = false) => {
         const isCurrent = originalIndex === centerIndex;
         let relativeValidIndex = validIndexCounter - centerModelValidIndex;
 
-        const currentAngle = relativeValidIndex * angleStep;
-        const targetX = radius * Math.sin(currentAngle);
-        const targetZ = radius - radius * Math.cos(currentAngle);
+        const angleStep = (Math.PI * 2) / numValidEntries; 
+        const angle = relativeValidIndex * angleStep;
+
+        const targetX = Math.sin(angle) * radius;
+        const targetZ = Math.cos(angle) * radius;
+
         data.targetPosition.set(targetX, 0, targetZ);
+
+        if (isCurrent) {
+            data.targetPosition.z = radius * 0.5; 
+            data.targetPosition.y += mainModelYOffset; 
+        }
 
         const dummy = new THREE.Object3D();
         dummy.position.copy(data.targetPosition);
         const objUp = data.placeholder?.up ?? data.model?.up ?? new THREE.Vector3(0, 1, 0);
         dummy.up.copy(objUp);
-        dummy.lookAt(camera!.position); 
+        dummy.lookAt(camera!.position);
         data.placeholderTargetQuaternion.copy(dummy.quaternion);
         if (!isCurrent || snap) {
             data.targetQuaternion.copy(data.placeholderTargetQuaternion);
-        } else {
-            const dummy = new THREE.Object3D();
-            dummy.position.set(0, 0, 0);
-            const objUp = data.model?.up ?? new THREE.Vector3(0, 1, 0);
-            dummy.up.copy(objUp);
-            dummy.lookAt(camera!.position);
-            data.targetQuaternion.copy(dummy.quaternion);
         }
 
-        const scaleFactor = isCurrent ? 1.0 : 1.0 + props.scaleMultiplier;
+        const scaleFactor = isCurrent ? 1 : 1 * props.scaleMultiplier; 
         const finalScale = props.modelDefaultSize * scaleFactor;
         data.targetScale.set(finalScale, finalScale, finalScale);
 
         if (snap) {
             const objectToSnap = isCurrent ? data.model : data.placeholder;
-            const targetQuat = isCurrent ? data.targetQuaternion : data.placeholderTargetQuaternion; 
+            const targetQuat = isCurrent ? data.targetQuaternion : data.placeholderTargetQuaternion;
 
             if (objectToSnap) {
                 objectToSnap.position.copy(data.targetPosition);
-                objectToSnap.quaternion.copy(targetQuat); 
+                objectToSnap.quaternion.copy(targetQuat);
                 objectToSnap.scale.copy(data.targetScale);
                 objectToSnap.updateMatrixWorld(true);
             }
+        }
+
+        if (data.model) {
+            data.model.visible = true;
+            data.model.scale.copy(data.targetScale); 
+        }
+        if (data.placeholder) {
+            data.placeholder.visible = true;
+            data.placeholder.scale.copy(data.targetScale); 
         }
     });
     needsRender = true;
@@ -646,125 +664,124 @@ const calculateModelTargets = (centerIndex: number, snap: boolean = false) => {
 const setupInitialCamera = () => {
     if (!camera || !controls) return;
 
-    const initialPosition = new THREE.Vector3(-0.30, 0.06, -0.25);
-    const initialRotationEuler = new THREE.Euler(
-        THREE.MathUtils.degToRad(-9.7),
-        THREE.MathUtils.degToRad(-132.7),
-        THREE.MathUtils.degToRad(-0.0),
-        'YXZ'
-    );
+    const numValidEntries = modelData.filter(d => d !== null).length;
+    if (numValidEntries === 0) return;
 
-    camera.position.copy(initialPosition);
-    camera.rotation.copy(initialRotationEuler); 
-    camera.updateMatrixWorld(); 
-    const cameraDistance = camera.position.length(); 
+    const radius = props.curveRadius;
+    const distanceFactor = 1.5; 
+    const cameraDistance = radius * distanceFactor;
+
+    camera.position.set(0, radius * 0.5, cameraDistance);
+    camera.lookAt(0, 0, 0);
+    camera.updateMatrixWorld();
+
     camera.near = Math.max(0.01, cameraDistance * 0.1);
-    camera.far = Math.max(50, cameraDistance * 10 + props.curveRadius * 2);
-    camera.updateProjectionMatrix(); 
+    camera.far = Math.max(50, cameraDistance * 10);
+    camera.updateProjectionMatrix();
 
-    controls.target.set(0, 0, 0); 
-    controls.update(); 
+    controls.target.set(0, 0, 0);
+    controls.update();
 
-    console.log(`Camera initialised to fixed position/rotation.`);
+    console.log(`Camera initialized to fit all models.`);
 };
 
 
 
 const switchToModel = (requestedIndex: number) => {
-     if (!isFullyLoaded.value || !scene || modelData.length <= 1) return;
+    if (!isFullyLoaded.value || !scene || modelData.length <= 1) return;
 
-     const numValidEntries = modelData.filter(d => d !== null).length;
-     if (numValidEntries <= 1) return; 
+    const numValidEntries = modelData.filter(d => d !== null).length;
+    if (numValidEntries <= 1) return;
 
-     let currentValidIndex = -1;
-     let targetValidIndex = -1;
-     let currentActualIndex = -1;
-     let targetActualIndex = -1;
-     let validCounter = 0;
+    let currentValidIndex = -1;
+    let targetValidIndex = -1;
+    let currentActualIndex = -1;
+    let targetActualIndex = -1;
+    let validCounter = 0;
 
-     for(let i=0; i < modelData.length; i++){
-         if(modelData[i]){
-             if(i === currentModelIndex.value) {
-                 currentValidIndex = validCounter;
-                 currentActualIndex = i;
-             }
-             const normalizedRequested = ((requestedIndex % numValidEntries) + numValidEntries) % numValidEntries;
-             if(validCounter === normalizedRequested) {
-                 targetValidIndex = validCounter;
-                 targetActualIndex = i;
-             }
-             validCounter++;
-         }
-     }
+    for (let i = 0; i < modelData.length; i++) {
+        if (modelData[i]) {
+            if (i === currentModelIndex.value) {
+                currentValidIndex = validCounter;
+                currentActualIndex = i;
+            }
+            const normalizedRequested = ((requestedIndex % numValidEntries) + numValidEntries) % numValidEntries;
+            if (validCounter === normalizedRequested) {
+                targetValidIndex = validCounter;
+                targetActualIndex = i;
+            }
+            validCounter++;
+        }
+    }
 
+    if (targetActualIndex === -1 || targetActualIndex === currentActualIndex || !controls) {
+        console.warn(`Switch aborted: target index ${targetActualIndex} invalid or same as current ${currentActualIndex}.`);
+        return;
+    }
 
-     if (targetActualIndex === -1 || targetActualIndex === currentActualIndex || !controls) {
-          console.warn(`Switch aborted: target index ${targetActualIndex} invalid or same as current ${currentActualIndex}.`);
-          return;
-     }
+    const oldIndex = currentActualIndex;
+    const newIndex = targetActualIndex;
+    const oldData = modelData[oldIndex];
+    const newData = modelData[newIndex];
 
-     const oldIndex = currentActualIndex;
-     const newIndex = targetActualIndex;
-     const oldData = modelData[oldIndex];
-     const newData = modelData[newIndex];
+    console.log(`Switching from index ${oldIndex} to ${newIndex}`);
 
-     console.log(`Switching from index ${oldIndex} to ${newIndex}`);
+    isUserInteracting.value = false;
+    isDraggingModel.value = false;
+    if (containerRef.value) containerRef.value.style.cursor = 'grab';
+    if (controls) controls.enabled = true;
+    autoRotating.value = false;
+    interactionEnded.value = true;
 
-     isUserInteracting.value = false;
-     isDraggingModel.value = false;
-     if(containerRef.value) containerRef.value.style.cursor = 'grab'; 
-     if(controls) controls.enabled = true; 
-     autoRotating.value = false; 
-     interactionEnded.value = true; 
+    if (oldData?.model && oldData.isModelActiveInScene) {
+        scene.remove(oldData.model);
+        console.log(`Removed model ${oldIndex}`);
+    }
+    if (oldData?.placeholder) {
+        oldData.placeholder.position.copy(oldData.targetPosition);
+        oldData.placeholder.quaternion.copy(oldData.placeholderTargetQuaternion);
+        oldData.placeholder.scale.copy(oldData.targetScale);
+        oldData.placeholder.updateMatrixWorld();
+        scene.add(oldData.placeholder);
+        console.log(`Added placeholder ${oldIndex}`);
+    }
+    if (oldData) oldData.isModelActiveInScene = false;
 
-     if (oldData?.model && oldData.isModelActiveInScene) {
-         scene.remove(oldData.model);
-          console.log(`Removed model ${oldIndex}`);
-     }
-     if (oldData?.placeholder) {
-          oldData.placeholder.position.copy(oldData.targetPosition);
-          oldData.placeholder.quaternion.copy(oldData.placeholderTargetQuaternion); 
-          oldData.placeholder.scale.copy(oldData.targetScale);
-          oldData.placeholder.updateMatrixWorld();
-         scene.add(oldData.placeholder);
-          console.log(`Added placeholder ${oldIndex}`);
-     }
-     if (oldData) oldData.isModelActiveInScene = false; 
+    if (newData?.placeholder && !newData.isModelActiveInScene) {
+        scene.remove(newData.placeholder);
+        console.log(`Removed placeholder ${newIndex}`);
+    }
+    if (newData?.model) {
+        newData.model.position.copy(newData.targetPosition);
+        newData.model.quaternion.copy(newData.targetQuaternion);
+        newData.model.scale.copy(newData.targetScale);
+        newData.model.updateMatrixWorld();
+        scene.add(newData.model);
+        console.log(`Added model ${newIndex}`);
+        newData.isModelActiveInScene = true;
+    } else if (newData?.placeholder) {
+        console.warn(`Model missing for new index ${newIndex}, adding its placeholder instead.`);
+        newData.placeholder.position.copy(newData.targetPosition);
+        newData.placeholder.quaternion.copy(newData.placeholderTargetQuaternion);
+        newData.placeholder.scale.copy(newData.targetScale);
+        newData.placeholder.updateMatrixWorld();
+        scene.add(newData.placeholder);
+        newData.isModelActiveInScene = false;
+    }
 
-     if (newData?.placeholder && !newData.isModelActiveInScene) { 
-         scene.remove(newData.placeholder);
-          console.log(`Removed placeholder ${newIndex}`);
-     }
-      if (newData?.model) {
-          newData.model.position.copy(newData.targetPosition);
-          newData.model.quaternion.copy(newData.targetQuaternion);
-          newData.model.scale.copy(newData.targetScale);
-          newData.model.updateMatrixWorld();
-          scene.add(newData.model);
-           console.log(`Added model ${newIndex}`);
-          newData.isModelActiveInScene = true; 
-      } else if (newData?.placeholder) {
-          console.warn(`Model missing for new index ${newIndex}, adding its placeholder instead.`);
-          newData.placeholder.position.copy(newData.targetPosition);
-           newData.placeholder.quaternion.copy(newData.placeholderTargetQuaternion); 
-           newData.placeholder.scale.copy(newData.targetScale);
-           newData.placeholder.updateMatrixWorld();
-           scene.add(newData.placeholder);
-           newData.isModelActiveInScene = false;
-      }
+    currentModelIndex.value = newIndex;
+    calculateModelTargets(newIndex, false);
+    if (newData) {
+        newData.targetQuaternion.copy(newData.placeholderTargetQuaternion);
+    }
+    setTimeout(() => {
+        if (props.autoRotate && !isUserInteracting.value) {
+            autoRotating.value = true;
+        }
+    }, 300);
 
-
-     currentModelIndex.value = newIndex;
-     calculateModelTargets(newIndex, false); 
-
-     setTimeout(() => {
-         if (props.autoRotate && !isUserInteracting.value) {
-             autoRotating.value = true;
-         }
-     }, 300); 
-
-     emit('model-switch', newIndex); 
-     needsRender = true;
+    emit('model-switch', newIndex);
+    needsRender = true;
 };
 
 const nextModel = () => {

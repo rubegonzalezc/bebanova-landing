@@ -40,30 +40,22 @@
             </div>
           </v-col>
           
-          <v-col cols="12" md="5" class="d-none d-md-block">
+          <v-col cols="12" md="5">
             <div class="cta-image">
               <div class="image-wrapper">
                 <ModelViewer
-        :modelSources="[`/3D/source/logo.glb`,`/3D/source/ender3.glb`,`/3D/source/quest3.glb`,`/3D/source/brain.glb`,`/3D/source/text.glb`]"
-        :previewImg="[`/logo.png`,`/ender3.png`,`/quest3.png`,`/AI.png`,`/code.png`]"
-        :textModel="[`!Bienvenido a Bebanova! `,`modelo2`,`modelo3`,`modelo4`,`modelo5`]"
+        :modelSources="[`/3D/source/logo.glb`,`/3D/source/quest3.glb`,`/3D/source/brain.glb`,`/3D/source/ender3.glb`,`/3D/source/text.glb`]"
+        :previewImg="[`/logo3D.png`,`/quest3.png`,`/AI.png`,`/ender3.png`,`/code.png`]"
+        :textModel="[`!Bienvenido a Bebanova! `,`Capacitaciones Realidad Virtual`,`Capacitaciones Inteligencia Artificial`,`Capacitaciones Impresión 3D`,`Apoyo en Programación`]"
         :enableScreenshot="false"
-        :modelDefaultSize="1.1"
+        :modelDefaultSize="15"
         class="model-viewer-masked"
       />
                 <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Bebanova Logo" class="main-image">
                
                 <div class="shape shape-1"></div>
                 <div class="shape shape-2"></div>
-                <div class="tech-badge tech-badge-1">
-                  <i class="fas fa-mobile-alt"></i>
-                </div>
-                <div class="tech-badge tech-badge-2">
-                  <i class="fas fa-vr-cardboard"></i>
-                </div>
-                <div class="tech-badge tech-badge-3">
-                  <i class="fas fa-code"></i>
-                </div>
+            
               </div>
             </div>
           </v-col>

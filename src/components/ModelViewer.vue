@@ -27,7 +27,7 @@ const sceneRef = ref(null)
 const carouselRef = ref<InstanceType<typeof ModelCarousel> | null>(null); 
 const threeSceneRef = ref<InstanceType<typeof ThreeScene> | null>(null);
 
-const emit = defineEmits(['screenshotTaken'])
+const emit = defineEmits(['screenshotTaken', 'modelIndexChanged'])
 
 const modelLoaded = ref(false)
 const showModel = ref(false)
@@ -101,11 +101,13 @@ onMounted(() => {
   } else {
     shouldLoadModel.value = true
   }
+  emit('modelIndexChanged', currentModelIndex.value);
 })
 const nextModel = () => {
   if (carouselRef.value && isMultiModel.value) {
     carouselRef.value.nextModel();
     currentModelIndex.value = (currentModelIndex.value + 1) % modelSources.value.length;
+    emit('modelIndexChanged', currentModelIndex.value); 
   }
 }
 
@@ -114,6 +116,7 @@ const prevModel = () => {
     currentModelIndex.value =
       (currentModelIndex.value - 1 + modelSources.value.length) % modelSources.value.length;
     carouselRef.value.previousModel();
+    emit('modelIndexChanged', currentModelIndex.value); 
   }
 }
 </script>
@@ -125,9 +128,9 @@ const prevModel = () => {
   >
     <div class="image-overlay" :class="{ 'fade-out': showModel }">
        <img :src="previewImg[0]" alt="Model Preview" class="preview-image" loading="lazy" />
-    </div>    <div v-if="isMultiModel && shouldLoadModel" class="carousel-controls">
+    </div>    
+    <div v-if="isMultiModel && shouldLoadModel" class="carousel-controls">
       <button class="arrow left-arrow" @click="prevModel" aria-label="Previous Model">&lt;</button>
-      <div v-if="textModel.length > 0" class="model-info-dialog">{{ currentModelText }}</div>
       <button class="arrow right-arrow" @click="nextModel" aria-label="Next Model">&gt;</button>
     </div>
 
@@ -144,6 +147,7 @@ const prevModel = () => {
     console.log('Model changed to index:', index); // Debugging
     nextTick(() => {
       currentModelIndex = index; // Update after DOM updates
+      emit('modelIndexChanged', currentModelIndex);
     });
   }"
         class="viewer-component"
@@ -177,6 +181,7 @@ const prevModel = () => {
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: visible;
 }
 
 .viewer-component {
@@ -224,6 +229,7 @@ const prevModel = () => {
   z-index: 25;
   pointer-events: none;
   padding-bottom: 50px; /* Add padding to expand the container further down */
+  overflow: visible;
 }
 
 .carousel-controls .arrow {

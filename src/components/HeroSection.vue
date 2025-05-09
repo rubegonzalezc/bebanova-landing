@@ -40,22 +40,27 @@
             </div>
           </v-col>
           
-          <v-col cols="12" md="5">
+          <v-col cols="12" md="5" style="overflow: visible !important;">
             <div class="cta-image">
               <div class="image-wrapper">
+                <div
+                  v-if="textModel.length > 0"
+                  class="model-info-dialog"
+                >
+                  {{ textModel[currentModelIndex] }}
+                </div>
                 <ModelViewer
-        :modelSources="[`/3D/source/logo.glb`,`/3D/source/quest3.glb`,`/3D/source/brain.glb`,`/3D/source/ender3.glb`,`/3D/source/text.glb`]"
-        :previewImg="[`/logo3D.png`,`/quest3.png`,`/AI.png`,`/ender3.png`,`/code.png`]"
-        :textModel="[`!Bienvenido a Bebanova! `,`Capacitaciones Realidad Virtual`,`Capacitaciones Inteligencia Artificial`,`Capacitaciones Impresión 3D`,`Apoyo en Programación`]"
-        :enableScreenshot="false"
-        :modelDefaultSize="15"
-        class="model-viewer-masked"
-      />
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Bebanova Logo" class="main-image">
-               
+                  :modelSources="[`/3D/source/logo.glb`,`/3D/source/quest3.glb`,`/3D/source/brain.glb`,`/3D/source/ender3.glb`,`/3D/source/text.glb`]"
+                  :previewImg="[`/logo3D.png`,`/quest3.png`,`/AI.png`,`/ender3.png`,`/code.png`]"
+                  :textModel="textModel"
+                  :enableScreenshot="false"
+                  :modelDefaultSize="15"
+                  class="model-viewer-masked"
+                  @modelIndexChanged="handleModelIndexChanged"
+                />
+                <img src="/public/hero-galaxy.png" alt="galaxia" class="main-image">
                 <div class="shape shape-1"></div>
                 <div class="shape shape-2"></div>
-            
               </div>
             </div>
           </v-col>
@@ -69,15 +74,28 @@
   export default {
     name: 'HeroSection',
     components: {
-    ModelViewer
-  },
+      ModelViewer
+    },
     data() {
       return {
         features: [
           'Proyectos 100% personalizados',
           'Tecnología de última generación',
           'Soporte continuo garantizado'
+        ],
+        currentModelIndex: 0,
+        textModel: [
+          '!Bienvenido a Bebanova! ',
+          'Capacitaciones Realidad Virtual',
+          'Capacitaciones Inteligencia Artificial',
+          'Capacitaciones Impresión 3D',
+          'Apoyo en Programación'
         ]
+      }
+    },
+    methods: {
+      handleModelIndexChanged(index) {
+        this.currentModelIndex = index;
       }
     }
   }
@@ -89,7 +107,7 @@
     color: white;
     padding: 160px 0 100px;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
   
   .pattern-bg {
@@ -171,11 +189,14 @@
   -webkit-mask-size: cover;
   mask-size: cover;
   opacity: 1;
+  max-height: 70%;
+  max-width: 100%;
+  top:10%;
   }
   
   .main-image {
-    width: 350px;
-    height: auto;
+    width: 100%;
+    height: 100%;
     position: relative;
     z-index: 5;
     filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
@@ -187,6 +208,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    max-width: auto;
+    max-height: auto;
+      overflow: visible;
+      
   }
   
   // Resto de los estilos para shapes y tech-badges
@@ -262,6 +287,26 @@
     background: rgba(255, 255, 255, 0.1) !important;
     color: white !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+
+  .model-info-dialog {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    pointer-events: auto;
+    text-align: center;
+    max-width: 90%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: normal;
+    z-index: 100;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25);
   }
   
   // Responsive styles

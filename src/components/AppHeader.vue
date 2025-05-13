@@ -4,7 +4,7 @@
         <v-row align="center">
           <v-col cols="auto">
             <div class="logo">
-              <img src="@/assets/img/logo.png" alt="Bebanova Logo">
+              <img src="/public/logoSolo.png" alt="Bebanova Logo">
             </div>
           </v-col>
           
@@ -84,7 +84,6 @@
   <style lang="scss" scoped>
   header {
     background-color: white;
-    padding: 20px 0;
     position: fixed;
     width: 100%;
     top: 0;
@@ -92,9 +91,8 @@
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease-in-out;
-    
+
     &.scrolled {
-      padding: 10px 0;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
   }
@@ -103,6 +101,10 @@
     height: 70px;
     width: auto;
     transition: all 0.3s ease-in-out;
+  }
+
+  header.scrolled .logo img {
+    height: 40px; // Shrink logo on scroll
   }
   
   nav ul {

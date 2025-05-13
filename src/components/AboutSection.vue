@@ -1,51 +1,18 @@
-<!-- filepath: c:\Users\ruben.gonzalez\OneDrive - Servicios Dimerc SpA\Escritorio\Bebanova\bebanova-vue\src\components\AboutSection.vue -->
 <template>
     <section id="about" class="about">
       <div class="container">
         <div class="section-header">
-          <h2>Nosotros</h2>
+          <h2>Nuestra filosofía</h2>
           <div class="section-divider">
             <span></span>
           </div>
         </div>
         <div class="about-content">
           <div class="about-intro" ref="aboutIntro">
-            <div class="about-intro-text">
-              <p class="lead">
-                En <span class="highlight">Bebanova</span> combinamos creatividad y tecnología para impulsar 
-                la transformación digital de las empresas.
-              </p>
-              <p class="about-description">
-                Con más de <strong>5 años de experiencia</strong>, nuestro equipo multidisciplinario está 
-                comprometido con la excelencia e innovación. Trabajamos en estrecha colaboración con nuestros 
-                clientes para entender sus necesidades y ofrecer soluciones personalizadas que impulsan su crecimiento.
-              </p>
-            </div>
-            <div class="about-stats">
-              <div class="stat-item" v-for="(stat, index) in stats" :key="index">
-                <div class="stat-number" ref="statNumbers">{{ stat.number }}</div>
-                <div class="stat-label">{{ stat.label }}</div>
-              </div>
-            </div>
+
+            
           </div>
-          <div class="mission-vision" ref="missionVision">
-            <div class="mission">
-              <div class="card-icon">
-                <i class="fas fa-bullseye"></i>
-              </div>
-              <h3>Nuestra Misión</h3>
-              <p>Democratizar la tecnología emergente para todos, haciendo accesible lo complejo 
-                a través de soluciones intuitivas y eficientes.</p>
-            </div>
-            <div class="vision">
-              <div class="card-icon">
-                <i class="fas fa-eye"></i>
-              </div>
-              <h3>Nuestra Visión</h3>
-              <p>Ser líderes en soluciones digitales inmersivas en Latinoamérica, 
-                marcando tendencia en la integración de tecnologías emergentes.</p>
-            </div>
-          </div>
+
           <div class="values" ref="values">
             <div class="value-item" v-for="(value, index) in values" :key="index">
               <div class="value-icon">
@@ -55,6 +22,33 @@
               <p>{{ value.description }}</p>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+    <section id="next-section" class="next-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>¿Qué es BEBANOVA?</h2>
+          <div class="section-divider">
+            <span></span>
+          </div>
+        </div>
+        <div class="next-section-content">
+          <p>
+            Somos una empresa chilena innovadora y vanguardista dedicada a empoderar a individuos y organizaciones en esta era digital.
+          </p>
+          <p>
+            Nos especializamos en ofrecer <strong>SOLUCIONES TECNOLÓGICAS DE PUNTA</strong> y <strong>CAPACITACIÓN DE LA MÁS ALTA CALIDAD</strong> en áreas cruciales como el desarrollo digital, la realidad virtual, la impresión 3D y la robótica, diseñadas para ser accesibles a todos.
+          </p>
+          <p>
+            En BEBANOVA, hemos creado algo diferente. <strong>NO SOMOS SOLO OTRA EMPRESA DE TECNOLOGÍA</strong>. Somos arquitectos de posibilidades, diseñadores de futuros. Entendemos esa sensación, esa barrera que a veces sientes frente a lo digital, la realidad virtual, la impresión 3D, la IA. Demasiado complejo, ¿verdad?
+          </p>
+          <p>
+            <strong>ESTAMOS AQUÍ PARA SIMPLIFICAR LO ASOMBROSO.</strong> Y la inspiración detrás de BEBANOVA es tan pura y constante como la lealtad de un compañero fiel, cuyo espíritu y nombre lleva esta empresa.
+          </p>
+          <p>
+            <strong>NUESTRA MISIÓN ES CLARA:</strong> poner el poder de la innovación directamente en tus manos. Te equipamos con las herramientas más avanzadas y una comprensión profunda, desmitificando cada concepto, haciendo accesible lo que parecía inalcanzable.
+          </p>
         </div>
       </div>
     </section>
@@ -484,6 +478,40 @@
           color: #555;
         }
       }
+    }
+  }
+  
+  .next-section {
+    background: #fff;
+    padding: 100px 0 120px 0;
+    .section-header {
+      text-align: center;
+      margin-bottom: 50px;
+      h2 {
+        font-size: 2.2rem;
+        color: #1a1a2e;
+        margin-bottom: 18px;
+      }
+      .section-divider span {
+        display: inline-block;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, #4169e1, #80b3ff);
+        border-radius: 4px;
+      }
+    }
+    .next-section-content {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.15rem;
+      color: #444;
+      line-height: 1.8;
+      text-align: justify; // Justified text
+    }
+
+    .next-section-content strong {
+      font-weight: bold;
+      letter-spacing: 1px;
     }
   }
   

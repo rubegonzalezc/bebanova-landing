@@ -11,10 +11,14 @@ const props = defineProps<{
   previewImg: string[]
   enableScreenshot?: boolean
   modelDefaultSize: number
-  maskImage: String
+  textModel?: string[]; // New prop for per-model dialog text
 }>()
 const modelSources = computed(() => {
   return props.modelSources || [];
+});
+
+const textModel = computed(() => {
+  return props.textModel || [];
 });
 
 const isMultiModel = computed(() => modelSources.value.length > 1);
@@ -23,7 +27,7 @@ const sceneRef = ref(null)
 const carouselRef = ref<InstanceType<typeof ModelCarousel> | null>(null); 
 const threeSceneRef = ref<InstanceType<typeof ThreeScene> | null>(null);
 
-const emit = defineEmits(['screenshotTaken'])
+const emit = defineEmits(['screenshotTaken', 'modelIndexChanged'])
 
 const modelLoaded = ref(false)
 const showModel = ref(false)
@@ -32,6 +36,15 @@ const screenshotToolRef = ref(null)
 const screenshotTaken = ref(false)
 const containerRef = ref<HTMLDivElement | null>(null)
 const shouldLoadModel = ref(false)
+
+const currentModelIndex = ref(0);
+
+const currentModelText = computed(() => {
+  if (isMultiModel.value && textModel.value.length > 0) {
+    return textModel.value[currentModelIndex.value] || '';
+  }
+  return '';
+});
 
 const handleModelLoaded = async () => {
   console.log('Model loaded event received')
@@ -88,40 +101,57 @@ onMounted(() => {
   } else {
     shouldLoadModel.value = true
   }
+  emit('modelIndexChanged', currentModelIndex.value);
 })
 const nextModel = () => {
   if (carouselRef.value && isMultiModel.value) {
-    carouselRef.value.nextModel(); 
+    carouselRef.value.nextModel();
+    currentModelIndex.value = (currentModelIndex.value + 1) % modelSources.value.length;
+    emit('modelIndexChanged', currentModelIndex.value); 
   }
 }
 
 const prevModel = () => {
   if (carouselRef.value && isMultiModel.value) {
+    currentModelIndex.value =
+      (currentModelIndex.value - 1 + modelSources.value.length) % modelSources.value.length;
     carouselRef.value.previousModel();
+    emit('modelIndexChanged', currentModelIndex.value); 
   }
 }
 </script>
 
 <template>
-   <div 
+  <div 
     class="model-container" 
     ref="containerRef"
-    :style="{ '--mask-image-url': `url(${maskImage})` }"
   >
     <div class="image-overlay" :class="{ 'fade-out': showModel }">
        <img :src="previewImg[0]" alt="Model Preview" class="preview-image" loading="lazy" />
+    </div>    
+    <div v-if="isMultiModel && shouldLoadModel" class="carousel-controls">
+      <button class="arrow left-arrow" @click="prevModel" aria-label="Previous Model">&lt;</button>
+      <button class="arrow right-arrow" @click="nextModel" aria-label="Next Model">&gt;</button>
     </div>
+
     <template v-if="shouldLoadModel">
-        <ModelCarousel
-            v-if="isMultiModel"
-            ref="carouselRef"
-            :modelSources="modelSources"
-            :previewImgs="previewImg"
-            :modelDefaultSize="modelDefaultSize"
-            @model-loaded="handleModelLoaded"
-            @rotation-change="handleRotationChange"
-            class="viewer-component"
-         />
+      <ModelCarousel
+        v-if="isMultiModel"
+        ref="carouselRef"
+        :modelSources="modelSources"
+        :previewImgs="previewImg"
+        :modelDefaultSize="modelDefaultSize"
+        @model-loaded="handleModelLoaded"
+        @rotation-change="handleRotationChange"
+        @model-changed="(index) => {
+    console.log('Model changed to index:', index); // Debugging
+    nextTick(() => {
+      currentModelIndex = index; // Update after DOM updates
+      emit('modelIndexChanged', currentModelIndex);
+    });
+  }"
+        class="viewer-component"
+      />
          <ThreeScene
             v-else-if="modelSources.length === 1"
             ref="threeSceneRef"
@@ -132,19 +162,15 @@ const prevModel = () => {
              class="viewer-component"
           />
     </template>
-    <div v-if="isMultiModel && shouldLoadModel" class="carousel-controls">
-      <button @click="prevModel" aria-label="Previous Model">&lt;</button>
-        <button @click="nextModel" aria-label="Next Model">&gt;</button>
-    </div>
 
     <ScreenshotTool
-    v-if="enableScreenshot && shouldLoadModel"
-    ref="screenshotToolRef"
-    :scene="isMultiModel ? carouselRef : threeSceneRef"
-    :enableScreenshot="!!enableScreenshot"
-    :model-count="isMultiModel ? modelSources.length : undefined"
-    @screenshot-taken="handleScreenshotTaken"
-/>
+      v-if="enableScreenshot && shouldLoadModel"
+      ref="screenshotToolRef"
+      :scene="isMultiModel ? carouselRef : threeSceneRef"
+      :enableScreenshot="!!enableScreenshot"
+      :model-count="isMultiModel ? modelSources.length : undefined"
+      @screenshot-taken="handleScreenshotTaken"
+    />
   </div>
 </template>
 
@@ -155,14 +181,7 @@ const prevModel = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  mask-image: var(--mask-image-url);
-  mask-size: contain;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  -webkit-mask-image: var(--mask-image-url);
-  -webkit-mask-size: contain;
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
+  overflow: visible;
 }
 
 .viewer-component {
@@ -173,7 +192,6 @@ const prevModel = () => {
   height: 100%;
   z-index: 5; 
 }
-
 
 .image-overlay {
   position: absolute;
@@ -203,21 +221,54 @@ const prevModel = () => {
 
 .carousel-controls {
   position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 25; 
+  top: 50%;
+  width: 100%;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 25;
+  pointer-events: none;
+  padding-bottom: 50px; /* Add padding to expand the container further down */
+  overflow: visible;
 }
 
-.carousel-controls button {
+.carousel-controls .arrow {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 10px 15px;
   cursor: pointer;
+  border-radius: 50%;
+  font-size: 1.5em;
+  pointer-events: auto;
+}
+
+.carousel-controls .left-arrow {
+  position: absolute;
+  left: 10px;
+}
+
+.carousel-controls .right-arrow {
+  position: absolute;
+  right: 10px;
+}
+
+.carousel-controls .model-info-dialog {
+  position: absolute;
+  bottom: -130px; /* Move it further down */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 8px 12px;
   border-radius: 4px;
-  font-size: 1.2em;
+  font-size: 1em;
+  pointer-events: auto;
+  text-align: center;
+  max-width: 90%; /* Prevents the dialog from exceeding the container width */
+   /* Increase max-height to allow more text */
+  overflow-wrap: break-word; /* Wraps long words */
+  word-wrap: break-word;
+  white-space: normal; /* Allows text to wrap */
 }
 </style>

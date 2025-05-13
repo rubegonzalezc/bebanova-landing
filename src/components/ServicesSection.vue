@@ -109,7 +109,6 @@
             description: 'Experiencias inmersivas y soluciones VR personalizadas para tu negocio.',
             features: [
               'Experiencias VR inmersivas',
-              'Aplicaciones educativas',
               'Simulaciones de entrenamiento',
               'Tours virtuales',
               'Desarrollo para metaverso'

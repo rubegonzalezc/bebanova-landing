@@ -5,9 +5,8 @@
         <v-row align="center">
           <v-col cols="12" md="7">
             <div class="cta-content">
-              <div class="cta-badge">Innovación Tecnológica</div>
-              <h1>Transforma tu <span class="highlight">negocio</span> con soluciones digitales de vanguardia</h1>
-              <p>Desde aplicaciones web hasta experiencias de realidad virtual, creamos tecnología que impulsa el futuro de tu empresa</p>
+              <h1>Soluciones <span class="gradient-text-hero">galácticas</span> personalizadas</h1>
+              <p>Desde aplicaciones web hasta experiencias de realidad virtual, creamos tecnología que impulsa el futuro de tu empresa.</p>
               
               <div class="cta-actions">
                 <v-btn
@@ -17,7 +16,7 @@
                   rounded="pill"
                   elevation="3"
                 >
-                  Solicita una consulta gratuita
+                  SOLICITAR COTIZACIÓN
                 </v-btn>
                 
                 <v-btn
@@ -27,15 +26,8 @@
                   rounded="pill"
                   variant="outlined"
                 >
-                  Explorar servicios
+                  EXPLORAR SERVICIOS
                 </v-btn>
-              </div>
-              
-              <div class="cta-features">
-                <div class="feature" v-for="(feature, index) in features" :key="index">
-                  <i class="fas fa-check-circle"></i>
-                  <span>{{ feature }}</span>
-                </div>
               </div>
             </div>
           </v-col>
@@ -78,11 +70,6 @@
     },
     data() {
       return {
-        features: [
-          'Proyectos 100% personalizados',
-          'Tecnología de última generación',
-          'Soporte continuo garantizado'
-        ],
         currentModelIndex: 0,
         textModel: [
           '!Bienvenido a Bebanova! ',
@@ -120,78 +107,48 @@
     opacity: 0.5;
   }
   
-  // Estilos para cta-content, cta-badge, highlight, cta-actions, etc.
-  
-  .cta-badge {
-    display: inline-block;
-    background: rgba(65, 105, 225, 0.2);
-    color: #80b3ff;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 8px 15px;
-    border-radius: 30px;
-    margin-bottom: 25px;
-    border: 1px solid rgba(65, 105, 225, 0.3);
+  .cta-content {
   }
   
   h1 {
-    font-size: 3.2rem;
+    font-size: 3rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.3;
     margin-bottom: 25px;
     letter-spacing: -0.5px;
   }
   
-  .highlight {
-    position: relative;
-    color: #80b3ff;
-    z-index: 1;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 5px;
-      left: 0;
-      width: 100%;
-      height: 8px;
-      background-color: rgba(65, 105, 225, 0.3);
-      z-index: -1;
-      border-radius: 10px;
-    }
+  .gradient-text-hero {
+    background: linear-gradient(135deg, #80b3ff, #4fc3f7, #a98eff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline;
   }
   
-  // Resto de estilos para cta-content, cta-features, image-wrapper, etc.
-  
-  .cta-features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px 30px;
-    margin-top: 30px;
+  .cta-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 35px;
+    max-width: 550px;
   }
   
-  .feature {
+  .cta-actions {
     display: flex;
     align-items: center;
-    font-size: 1rem;
-    
-    i {
-      color: #80b3ff;
-      margin-right: 10px;
-      font-size: 18px;
-    }
+    gap: 15px;
   }
   
-  // Estilos para la imagen y animaciones
-  .model-viewer-masked{
-  z-index: 10;
-  -webkit-mask-image: radial-gradient(circle, rgba(65, 105, 225, 1) 70%, rgba(0, 0, 0, 0) 90%);
-  mask-image: radial-gradient(circle, rgba(65, 105, 225, 1) 70%, rgba(0, 0, 0, 0) 90%);
-  -webkit-mask-size: cover;
-  mask-size: cover;
-  opacity: 1;
-  max-height: 70%;
-  max-width: 100%;
-  top:10%;
+  .model-viewer-masked {
+    z-index: 10;
+    -webkit-mask-image: radial-gradient(circle, rgba(65, 105, 225, 1) 70%, rgba(0, 0, 0, 0) 90%);
+    mask-image: radial-gradient(circle, rgba(65, 105, 225, 1) 70%, rgba(0, 0, 0, 0) 90%);
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    opacity: 1;
+    max-height: 70%;
+    max-width: 100%;
+    top: 10%;
   }
   
   .main-image {
@@ -210,11 +167,9 @@
     align-items: center;
     max-width: auto;
     max-height: auto;
-      overflow: visible;
-      
+    overflow: visible;
   }
   
-  // Resto de los estilos para shapes y tech-badges
   .shape {
     position: absolute;
     border-radius: 50%;
@@ -240,47 +195,8 @@
     animation: rotate 12s linear infinite reverse;
   }
   
-  .tech-badge {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-color: white;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-    animation: pulse 3s infinite;
-    
-    i {
-      color: #4169e1;
-      font-size: 24px;
-    }
-  }
-  
-  .tech-badge-1 {
-    top: 20%;
-    left: 0;
-    animation-delay: 0.5s;
-  }
-  
-  .tech-badge-2 {
-    bottom: 15%;
-    left: 15%;
-    animation-delay: 1s;
-  }
-  
-  .tech-badge-3 {
-    top: 30%;
-    right: 5%;
-    animation-delay: 1.5s;
-  }
-  
-  // Estilos para botones
   .btn-primary {
     background: linear-gradient(135deg, #4169e1 0%, #80b3ff 100%) !important;
-    margin-right: 15px;
   }
   
   .btn-secondary {
@@ -306,30 +222,63 @@
     word-wrap: break-word;
     white-space: normal;
     z-index: 100;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
   }
   
-  // Responsive styles
   @media (max-width: 960px) {
     .cta {
-      padding: 140px 0 80px;
+      padding: 120px 0 60px;
+      text-align: center;
     }
     
+    .cta-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     h1 {
-      font-size: 2.3rem;
+      font-size: 2.5rem;
     }
     
     .cta-content p {
-      font-size: 1.1rem;
+      font-size: 1rem;
+      max-width: 90%;
     }
     
     .cta-actions {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
+      width: 100%;
     }
     
     .btn-primary, .btn-secondary {
       margin-bottom: 15px;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .image-wrapper {
+      margin-top: 40px;
+    }
+    
+    .model-info-dialog {
+      font-size: 1em;
+      padding: 10px 15px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 2rem;
+    }
+    .cta-content p {
+      font-size: 0.9rem;
+    }
+    .model-info-dialog {
+      font-size: 0.9em;
+      padding: 8px 12px;
+      top: 75%;
     }
   }
   </style>

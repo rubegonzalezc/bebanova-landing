@@ -4,7 +4,8 @@
         <v-row align="center">
           <v-col cols="auto">
             <div class="logo">
-              <img src="/public/logoSolo.png" alt="Bebanova Logo">
+              <!-- Asegúrate que esta es la ruta correcta a tu logo oscuro con texto blanco -->
+              <img src="@/assets/img/logo.png" alt="Bebanova Logo">
             </div>
           </v-col>
           
@@ -32,7 +33,8 @@
         v-model="mobileMenuOpen"
         temporary
         location="right"
-        class="mobile-menu"
+        class="mobile-menu" 
+        theme="dark"
       >
         <v-list>
           <v-list-item 
@@ -83,28 +85,34 @@
   
   <style lang="scss" scoped>
   header {
-    background-color: white;
+    // Fondo oscuro para el header, puedes ajustarlo a un color sólido o gradiente de tu proyecto
+    background: linear-gradient(135deg, #1a1a2e 0%, #000f2e 100%); // Ejemplo de gradiente oscuro
+    // background-color: #1a1a2e; // Alternativa: color sólido oscuro
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); // Sombra ajustada para fondo oscuro
     transition: all 0.3s ease-in-out;
+    padding-top: 10px; // Añadido padding para que el logo no esté tan pegado arriba
+    padding-bottom: 10px;
 
     &.scrolled {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      // Podrías cambiar ligeramente el fondo al hacer scroll si lo deseas
+      // background: #111; // Ejemplo de fondo ligeramente diferente al hacer scroll
     }
   }
   
   .logo img {
-    height: 70px;
+    height: 75px; // Ajustado el tamaño inicial del logo
     width: auto;
     transition: all 0.3s ease-in-out;
   }
 
   header.scrolled .logo img {
-    height: 40px; // Shrink logo on scroll
+    height: 40px; // Encoger logo al hacer scroll
   }
   
   nav ul {
@@ -115,29 +123,31 @@
   }
   
   nav ul li {
-    margin-left: 25px;
+    margin-left: 30px; // Aumentado ligeramente el margen
   }
   
   nav ul li a {
-    color: #1a1a2e;
+    color: #e0e0e0; // Color claro para texto de navegación sobre fondo oscuro
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease-in-out;
     position: relative;
+    font-size: 0.95rem;
     
     &:after {
       content: '';
       position: absolute;
       width: 0;
       height: 2px;
-      bottom: -5px;
-      left: 0;
-      background-color: #4169e1;
+      bottom: -6px; // Ajustado para que no esté tan pegado
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #4fc3f7; // Color de acento para la línea (azul claro)
       transition: all 0.3s ease-in-out;
     }
     
     &:hover {
-      color: #4169e1;
+      color: #ffffff; // Texto más brillante al hacer hover
       
       &:after {
         width: 100%;
@@ -147,8 +157,26 @@
   
   .mobile-toggle {
     display: flex;
-    color: #1a1a2e;
-    font-size: 24px;
+    color: #e0e0e0; // Color claro para el ícono del menú móvil
+    font-size: 26px; // Ligeramente más grande
     cursor: pointer;
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+
+  // Estilos para el menú de navegación móvil (drawer)
+  // Si usas Vuetify, el `theme="dark"` en v-navigation-drawer ayudará.
+  // Puedes añadir estilos más específicos aquí si es necesario.
+  .mobile-menu {
+    // background-color: #1a1a2e; // Asegura que el drawer también tenga fondo oscuro
+    // .v-list-item-title {
+    //   color: #e0e0e0;
+    // }
+    // .v-list-item:hover {
+    //   background-color: rgba(255, 255, 255, 0.1);
+    // }
   }
   </style>

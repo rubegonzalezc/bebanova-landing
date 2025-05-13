@@ -111,7 +111,6 @@
               'Experiencias VR inmersivas',
               'Simulaciones de entrenamiento',
               'Tours virtuales',
-              'Desarrollo para metaverso'
             ],
             expanded: false,
             animated: false

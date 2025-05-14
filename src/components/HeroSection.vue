@@ -46,7 +46,7 @@
                   :previewImg="[`/logo3D.png`,`/quest3.png`,`/AI.png`,`/ender3.png`,`/code.png`]"
                   :textModel="textModel"
                   :enableScreenshot="false"
-                  :modelDefaultSize="15"
+                  :modelDefaultSize="20"
                   class="model-viewer-masked"
                   @modelIndexChanged="handleModelIndexChanged"
                 />

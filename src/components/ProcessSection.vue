@@ -95,7 +95,7 @@
   <style lang="scss" scoped>
   .process {
     background-color: #ffffff;
-    padding: 120px 0;
+    padding: 40px 0;
     position: relative;
     overflow: hidden;
     

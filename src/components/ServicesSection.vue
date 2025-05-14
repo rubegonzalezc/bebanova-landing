@@ -170,7 +170,7 @@
   
   .services {
     background-color: #f8fafc;
-    padding: 120px 0;
+    padding: 40px 0;
     position: relative;
     overflow: hidden;
     
@@ -255,7 +255,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px 25px 20px;
+    padding: 10px 15px 10px;
     position: relative;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     
@@ -267,7 +267,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       transition: all 0.3s ease;
       
       i {
@@ -318,7 +318,7 @@
   }
   
   .service-card p {
-    padding: 15px 25px;
+    padding: 15px 15px;
     color: #555;
     font-size: 0.95rem;
     text-align: center;
@@ -342,7 +342,7 @@
   
   .service-details ul {
     list-style: none;
-    padding: 25px;
+    padding: 15px;
     margin: 0;
   }
   

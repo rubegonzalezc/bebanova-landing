@@ -1,8 +1,25 @@
 <template>
+  <section id="next-section" class="next-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>¿Qué es BEBANOVA?</h2>
+          <div class="section-divider">
+            <span></span>
+          </div>
+        </div>
+        <div class="next-section-content">
+          <p>
+¿Qué es BEBANOVA? Somos una empresa chilena innovadora y vanguardista dedicada a empoderar a individuos y organizaciones en esta era digital. Nos especializamos en ofrecer soluciones tecnológicas de punta y capacitación de la más alta calidad en áreas cruciales como el desarrollo digital, la realidad virtual, la impresión 3D e  IA, diseñadas para ser accesibles a todos.
+En BEBANOVA, hemos creado algo diferente. NO SOMOS SOLO OTRA EMPRESA DE TECNOLOGÍA. Somos arquitectos de posibilidades, diseñadores de futuros. Entendemos esa sensación, esa barrera que a veces sientes frente a lo digital, la realidad virtual, la impresión 3D, la IA. Demasiado complejo, ¿verdad?
+Estamos aqui para simplificar lo asombroso. Y la inspiración detrás de BEBANOVA es tan pura y constante como la lealtad de un compañero fiel, cuyo espíritu y nombre lleva esta empresa.
+          </p>
+        </div>
+      </div>
+    </section>
     <section id="about" class="about">
       <div class="container">
         <div class="section-header">
-          <h2>Nuestra filosofía</h2>
+          <h2>Pilares Estrategicos</h2>
           <div class="section-divider">
             <span></span>
           </div>
@@ -25,33 +42,7 @@
         </div>
       </div>
     </section>
-    <section id="next-section" class="next-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>¿Qué es BEBANOVA?</h2>
-          <div class="section-divider">
-            <span></span>
-          </div>
-        </div>
-        <div class="next-section-content">
-          <p>
-            Somos una empresa chilena innovadora y vanguardista dedicada a empoderar a individuos y organizaciones en esta era digital.
-          </p>
-          <p>
-            Nos especializamos en ofrecer <strong>SOLUCIONES TECNOLÓGICAS DE PUNTA</strong> y <strong>CAPACITACIÓN DE LA MÁS ALTA CALIDAD</strong> en áreas cruciales como el desarrollo digital, la realidad virtual, la impresión 3D y la robótica, diseñadas para ser accesibles a todos.
-          </p>
-          <p>
-            En BEBANOVA, hemos creado algo diferente. <strong>NO SOMOS SOLO OTRA EMPRESA DE TECNOLOGÍA</strong>. Somos arquitectos de posibilidades, diseñadores de futuros. Entendemos esa sensación, esa barrera que a veces sientes frente a lo digital, la realidad virtual, la impresión 3D, la IA. Demasiado complejo, ¿verdad?
-          </p>
-          <p>
-            <strong>ESTAMOS AQUÍ PARA SIMPLIFICAR LO ASOMBROSO.</strong> Y la inspiración detrás de BEBANOVA es tan pura y constante como la lealtad de un compañero fiel, cuyo espíritu y nombre lleva esta empresa.
-          </p>
-          <p>
-            <strong>NUESTRA MISIÓN ES CLARA:</strong> poner el poder de la innovación directamente en tus manos. Te equipamos con las herramientas más avanzadas y una comprensión profunda, desmitificando cada concepto, haciendo accesible lo que parecía inalcanzable.
-          </p>
-        </div>
-      </div>
-    </section>
+    
   </template>
   
   <script>
@@ -140,7 +131,7 @@
   <style lang="scss" scoped>
   .about {
     background-color: #f8fafc;
-    padding: 120px 0;
+    padding: 40px 0;
     position: relative;
     overflow: hidden;
     
@@ -170,7 +161,7 @@
     
     .section-header {
       text-align: center;
-      margin-bottom: 70px;
+      margin-bottom: 10px;
       position: relative;
       z-index: 1;
       
@@ -282,7 +273,7 @@
         
         .stat-item {
           background-color: white;
-          padding: 20px;
+          padding: 10px;
           border-radius: 15px;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
           text-align: center;
@@ -333,7 +324,7 @@
         flex: 1;
         background: white;
         border-radius: 20px;
-        padding: 40px;
+        padding: 10px;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
         position: relative;
         overflow: hidden;
@@ -413,7 +404,7 @@
         flex: 1 1 calc(25% - 30px);
         min-width: 200px;
         text-align: center;
-        padding: 25px 20px;
+        padding: 15px 10px;
         background: white;
         border-radius: 15px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
@@ -483,7 +474,7 @@
   
   .next-section {
     background: #fff;
-    padding: 100px 0 120px 0;
+    padding: 10px 0 12px 0;
     .section-header {
       text-align: center;
       margin-bottom: 50px;
@@ -555,7 +546,7 @@
   
   @media (max-width: 768px) {
     .about {
-      padding: 80px 0;
+      padding: 10px 0;
     }
     
     .about-intro .about-stats .stat-item {

@@ -13,13 +13,10 @@
         </div>
         <div class="next-section-text">
           <div class="text-block">
-            ¿Qué es BEBANOVA? Somos una empresa chilena innovadora y vanguardista dedicada a empoderar a individuos y organizaciones en esta era digital. Nos especializamos en ofrecer soluciones tecnológicas de punta y capacitación de la más alta calidad en áreas cruciales como el desarrollo digital, la realidad virtual, la impresión 3D e IA, diseñadas para ser accesibles a todos.
+            BEBANOVA es una empresa chilena innovadora y vanguardista que empodera a individuos y organizaciones en la era digital. Nos especializamos en soluciones tecnológicas de punta y capacitación de alta calidad en áreas clave como desarrollo digital, realidad virtual, impresión 3D e inteligencia artificial, diseñadas para ser accesibles a todos.
           </div>
           <div class="text-block">
-            En BEBANOVA, hemos creado algo diferente. No somos solo otra empresa de tecnología. Somos arquitectos de posibilidades, diseñadores de futuros. Entendemos esa sensación, esa barrera que a veces sientes frente a lo digital, la realidad virtual, la impresión 3D e la IA. Demasiado complejo, ¿verdad?
-          </div>
-          <div class="text-block">
-            Estamos aquí para simplificar lo asombroso. Y la inspiración detrás de BEBANOVA es tan pura y constante como la lealtad de un compañero fiel, cuyo espíritu y nombre lleva esta empresa.
+             En BEBANOVA, no somos solo una empresa de tecnología; somos arquitectos de posibilidades y diseñadores de futuros. Inspirados en la lealtad y el espíritu de un compañero fiel que da nombre a nuestra empresa, simplificamos lo asombroso, derribando las barreras que a menudo se sienten frente a estas tecnologías.
           </div>
         </div>
       </div>

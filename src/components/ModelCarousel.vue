@@ -219,7 +219,7 @@ function onPointerDown(event: PointerEvent) {
     const intersects = raycaster.intersectObject(currentData.model, true);
 
     if (intersects.length > 0) {
-        event.preventDefault();
+        //event.preventDefault();
         isDraggingModel.value = true;
         isUserInteracting.value = true;
         interactionEnded.value = false;
@@ -240,7 +240,7 @@ function onPointerMove(event: PointerEvent) {
         return;
     }
 
-    event.preventDefault(); 
+    //event.preventDefault(); 
 
     const currentPointerX = event.clientX;
     const deltaX = currentPointerX - previousPointerX;
@@ -319,6 +319,9 @@ const initThree = () => {
   controls.enablePan = false;
   controls.enableDamping = true;
   controls.dampingFactor = 0.1;
+  
+    controls.enabled = false; 
+    controls.dispose();
 
   raycaster = new THREE.Raycaster();
 
@@ -1108,7 +1111,7 @@ defineExpose({
   overflow: hidden;
   contain: content;
   cursor: grab;
-  touch-action: none;
+  touch-action: pan-y;
 }
 
 .model-canvas {
@@ -1117,6 +1120,7 @@ defineExpose({
   height: 100%;
   z-index: 1;
   outline: none;
+  touch-action: pan-y;
 }
 
 .loading-indicator {
@@ -1133,8 +1137,10 @@ defineExpose({
   pointer-events: none; 
   white-space: nowrap;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  touch-action: pan-y;
 }
 .loading-indicator.error {
     background-color: rgba(180, 0, 0, 0.8); 
+    touch-action: pan-y;
 }
 </style>

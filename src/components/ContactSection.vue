@@ -2,7 +2,8 @@
 <template>
     <section id="contact" class="contact">
       <div class="container">
-        <h2>Contacto</h2>
+        <div class="section-header">
+        <h2>Contacto</h2></div>
         <div class="contact-container">
           <div class="contact-info">
             <div class="contact-card">
@@ -122,7 +123,7 @@
   <style lang="scss" scoped>
   .contact {
     background-color: #f8fafc;
-    padding: 120px 0;
+    padding: 40px 0;
     position: relative;
     overflow: hidden;
     
@@ -137,11 +138,17 @@
       border-radius: 50%;
       z-index: 0;
     }
-    
-    h2 {
-      margin-bottom: 60px;
+    .section-header {
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;}
+h2 {
+      font-size: 2.5rem;
+      color: #1a1a2e;
+      margin-bottom: 20px;
       position: relative;
-      z-index: 1;
+      display: inline-block;
     }
   }
   

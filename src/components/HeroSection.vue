@@ -207,7 +207,7 @@
 
   .model-info-dialog {
     position: absolute;
-    top: 80%;
+    top: 85%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.7);
@@ -278,7 +278,7 @@
     .model-info-dialog {
       font-size: 0.9em;
       padding: 8px 12px;
-      top: 75%;
+      top: 85%;
     }
   }
   </style>

@@ -109,6 +109,7 @@
     height: 75px; // Ajustado el tamaño inicial del logo
     width: auto;
     transition: all 0.3s ease-in-out;
+    filter: brightness(0) invert(1);
   }
 
   header.scrolled .logo img {

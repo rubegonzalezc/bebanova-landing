@@ -24,7 +24,27 @@
               </div>
               <p>{{ service.description }}</p>
               <div class="service-details">
-                <ul>
+                <ul v-if="Array.isArray(service.features) && service.features[0]?.subfeatures">
+                  <li 
+                    v-for="(feature, featureIndex) in service.features" 
+                    :key="featureIndex"
+                    :style="{ '--item-index': featureIndex }"
+                    class="main-feature"
+                  >
+                    <i class="fas fa-check"></i> {{ feature.name }}
+                    <ul class="subfeatures">
+                      <li 
+                        v-for="(sub, subIndex) in feature.subfeatures" 
+                        :key="subIndex"
+                        :style="{ '--item-index': subIndex }"
+                        class="sub-feature"
+                      >
+                        <i class="fas fa-plus"></i> {{ sub }}
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+                <ul v-else>
                   <li 
                     v-for="(feature, featureIndex) in service.features" 
                     :key="featureIndex"
@@ -52,10 +72,10 @@
             icon: 'fas fa-laptop-code',
             description: 'Sitios empresariales, ecommerce y mantenimiento web optimizado.',
             features: [
-              'Sitios web empresariales',
-              'Comercio electrónico (ecommerce)',
+              'Desarrollo de Sitios Web Empresariales',
+              'Desarrollo de Sitios Web Ecommerce',
+              'Mantenimiento y Actualización de Sitios Web',
               'Landing pages optimizadas',
-              'Mantenimiento y actualización',
               'Diseño UI/UX personalizado'
             ],
             expanded: false,
@@ -80,12 +100,25 @@
             icon: 'fas fa-brain',
             description: 'Implementación de IA para automatización y mejora de procesos empresariales.',
             features: [
-              'Chatbots inteligentes',
-              'Sistemas de recomendación',
-              'Procesamiento de lenguaje natural',
-              'Análisis predictivo',
-              'Automatización de procesos'
+              {
+                name: 'Diseño de Cursos',
+                subfeatures: [
+                 'Curso para todas las edades y perfiles',
+                  'Curso Práctico y Lúdico con IA',
+                ]
+              },
+              {
+                name: 'Servicios Personalizados',
+                subfeatures: [
+                  'Chatbots Inteligentes',
+              'Sistemas de Recomendación',
+              'Procesamiento de Lenguaje natural',
+              'Análisis Predictivo',
+              'Automatización de Procesos'
+                ]
+              }
             ],
+           
             expanded: false,
             animated: false
           },
@@ -94,11 +127,23 @@
             icon: 'fas fa-print',
             description: 'Cursos especializados y servicios de diseño para prototipos innovadores.',
             features: [
-              'Diseño de prototipos',
-              'Impresión de piezas personalizadas',
-              'Cursos básicos y avanzados',
-              'Consultoría técnica',
-              'Modelado 3D'
+              {
+                name: 'Diseño de Cursos',
+                subfeatures: [
+                  'Cursos introductorios 3D',
+                  'Cursos de modelado 3D',
+                  'Cursos de impresión 3D avanzada'
+                ]
+              },
+              {
+                name: 'Servicios Personalizados',
+                subfeatures: [
+                  'Diseño de Prototipos',
+                  'Impresión de piezas personalizadas',
+                  'Modelado 3D',
+                  'Consultoría técnica'
+                ]
+              }
             ],
             expanded: false,
             animated: false
@@ -107,11 +152,19 @@
             title: 'Realidad Virtual',
             icon: 'fas fa-vr-cardboard',
             description: 'Experiencias inmersivas y soluciones VR personalizadas para tu negocio.',
-            features: [
+              features: [
+              {
+                name: 'Diseño de Cursos',
+                subfeatures: [
+                 'Cursos básico: Introducción a los usuarios a los conceptos básicos de la RV, el funcionamiento de los lentes y la navegación en entornos virtuales.',
+                  'Tours virtuales',
               'Experiencias VR inmersivas',
               'Simulaciones de entrenamiento',
-              'Tours virtuales',
+                ]
+              },
+            
             ],
+
             expanded: false,
             animated: false
           }
@@ -166,7 +219,6 @@
   </script>
   
   <style lang="scss" scoped>
-  // Importar los estilos del servicio original...
   
   .services {
     background-color: #f8fafc;
@@ -249,7 +301,6 @@
     }
   }
   
-  // Resto de los estilos para el service-card...
   
   .service-header {
     display: flex;
@@ -286,7 +337,6 @@
     }
   }
   
-  // Resto de los estilos para service-card...
   
   .toggle-icon {
     position: absolute;
@@ -325,8 +375,6 @@
     margin-bottom: 5px;
   }
   
-  // Resto de los estilos para service-details...
-  
   .service-details {
     max-height: 0;
     overflow: hidden;
@@ -336,19 +384,21 @@
   }
   
   .service-card.expanded .service-details {
-    max-height: 400px;
+    max-height: none;      // Let it grow as needed
+    height: auto;          // Let height be determined by content
+    overflow: visible;     // Allow children to expand
     opacity: 1;
   }
   
   .service-details ul {
     list-style: none;
-    padding: 15px;
+    padding: 10px 10px 10px 10px;
     margin: 0;
   }
   
   .service-details ul li {
     position: relative;
-    padding: 12px 10px 12px 35px;
+    padding: 12px 10px 12px 30px;
     margin-bottom: 8px;
     border-radius: 8px;
     background-color: white;
@@ -359,22 +409,50 @@
     animation: fadeInUp 0.5s forwards;
     animation-delay: calc(0.1s * var(--item-index, 0));
     
-    &:last-child {
-      margin-bottom: 0;
-    }
-    
     i {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
+      position: static;
+      margin-right: 8px;
       color: #4169e1;
       font-size: 14px;
+      vertical-align: middle;
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
     }
     
     &:hover {
       background-color: rgba(65, 105, 225, 0.05);
       transform: translateX(5px);
     }
+  }
+
+  .subfeatures {
+    margin-top: 5px;
+    margin-left: 0;
+    padding-left: 18px;
+    border-left: 2px solid #e0e7ef;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .sub-feature {
+    background: none;
+    box-shadow: none;
+    color: #1a1a2e;
+    font-size: 0.95em;
+    padding: 6px 0 6px 18px;
+    margin-bottom: 2px;
+    opacity: 0.8;
+    i {
+      color: #b0b8d1;
+      font-size: 12px;
+      left: 0;
+      margin-right: 6px;
+      position: static;
+      vertical-align: middle;
+    }
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   </style>

@@ -108,8 +108,11 @@
   }
   
   .cta-content {
+
   }
-  
+    .cta-content:hover {
+     
+  }
   h1 {
     font-size: 3rem;
     font-weight: 700;
@@ -203,6 +206,16 @@
     background: rgba(255, 255, 255, 0.1) !important;
     color: white !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: scale(1.08);
+    z-index: 2;
   }
 
   .model-info-dialog {

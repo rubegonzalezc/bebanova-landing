@@ -2,7 +2,7 @@
     <section class="services">
       <v-container>
         <h2>Nuestros Servicios</h2>
-        <v-row>
+        <v-row class="justify-center">
           <v-col 
             v-for="(service, index) in services" 
             :key="index"
@@ -187,8 +187,10 @@
         if (service.expanded) {
           this.$nextTick(() => {
             const items = service.features;
-            items.forEach((_, index) => {
-              service.features[index].index = index;
+            items.forEach((item, index) => {
+              if (typeof item === 'object' && item !== null) {
+                service.features[index].index = index;
+              }
             });
           });
         }
@@ -262,13 +264,14 @@
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: 
+      transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     position: relative;
     cursor: pointer;
     border: 1px solid rgba(65, 105, 225, 0.05);
     margin-bottom: 30px;
-    height: 100%;
     
     &::before {
       content: '';
@@ -291,9 +294,14 @@
         transform: scaleX(1);
       }
     }
-    
+
     &.expanded::before {
       transform: scaleX(1);
+    }
+    
+    &.expanded {
+      transform: scale(1.02) translateY(-4px);
+      box-shadow: 0 24px 48px rgba(65, 105, 225, 0.10);
     }
     
     &.animated {
@@ -301,6 +309,12 @@
     }
   }
   
+
+
+  .service-card:not(.expanded):hover .icon {
+    transition: transform 0.4s ease;
+    transform: scale(0.1) scale(4) rotate(-360deg); 
+  }
   
   .service-header {
     display: flex;
@@ -319,8 +333,8 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 10px;
-      transition: all 0.3s ease;
-      
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+     
       i {
         font-size: 32px;
         color: #4169e1;

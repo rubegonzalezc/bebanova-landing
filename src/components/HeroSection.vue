@@ -108,11 +108,8 @@
   }
   
   .cta-content {
-
   }
-    .cta-content:hover {
-     
-  }
+  
   h1 {
     font-size: 3rem;
     font-weight: 700;

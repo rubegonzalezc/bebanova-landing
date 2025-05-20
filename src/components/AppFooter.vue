@@ -11,7 +11,14 @@
               Bebanova es una empresa especializada en soluciones digitales de vanguardia, enfocada en la transformación digital y la implementación de tecnologías emergentes para negocios.
             </p>
             <div class="footer-social">
-              <a v-for="(social, index) in socialLinks" :key="index" href="#" class="footer-social-icon">
+              <a
+                v-for="(social, index) in socialLinks"
+                :key="index"
+                :href="social.href || '#'"
+                class="footer-social-icon"
+                target="_blank"
+                rel="noopener"
+              >
                 <i :class="social.icon"></i>
               </a>
             </div>
@@ -64,10 +71,9 @@
       return {
         currentYear: new Date().getFullYear(),
         socialLinks: [
-          { icon: 'fab fa-facebook-f' },
-          { icon: 'fab fa-twitter' },
+          { icon: 'fab fa-whatsapp' },
           { icon: 'fab fa-instagram' },
-          { icon: 'fab fa-linkedin-in' }
+          { icon: 'fab fa-linkedin-in',href: 'https://www.linkedin.com/company/bebanova' }
         ],
         quickLinks: [
           { name: 'Inicio', url: '#home' },
@@ -87,15 +93,15 @@
           { 
             icon: 'fas fa-map-marker-alt', 
             title: 'Ubicación', 
-            value: 'Av. Principal 123, Santiago, Chile',
+            value: 'Los Olivillos 440, Concón, Chile',
             isLink: false
           },
           { 
             icon: 'fas fa-phone-alt', 
             title: 'Teléfono', 
-            value: '+569 1234 5678',
+            value: '+56 9 7466 6386',
             isLink: true,
-            href: 'tel:+56912345678'
+            href: 'tel:+56974666386'
           },
           { 
             icon: 'fas fa-envelope', 

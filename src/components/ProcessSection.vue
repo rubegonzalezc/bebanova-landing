@@ -1,8 +1,12 @@
 <template>
     <section class="process">
       <v-container>
-        <h2>Nuestro Proceso</h2>
-        
+        <div class="section-header">
+          <h2>Nuestro Proceso</h2>
+          <div class="section-divider">
+            <span></span>
+          </div>
+        </div>
         <div class="timeline">
           <div 
             v-for="(step, index) in processSteps" 
@@ -121,6 +125,57 @@
       background: linear-gradient(135deg, rgba(65, 105, 225, 0.05) 0%, rgba(65, 105, 225, 0.01) 100%);
       border-radius: 50%;
       z-index: 0;
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+      z-index: 1;
+
+      h2 {
+        font-size: 2.5rem;
+        color: #1a1a2e;
+        margin-bottom: 18px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .section-divider {
+        width: 100%;
+        text-align: center;
+        position: relative;
+        margin-bottom: 0;
+
+        span {
+          display: inline-block;
+          width: 80px;
+          height: 4px;
+          background: linear-gradient(90deg, #4169e1, #80b3ff);
+          border-radius: 4px;
+          position: relative;
+
+          &::before,
+          &::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4169e1;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+
+          &::before {
+            left: -15px;
+          }
+
+          &::after {
+            right: -15px;
+          }
+        }
+      }
     }
     
     h2 {

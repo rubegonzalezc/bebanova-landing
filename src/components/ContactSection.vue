@@ -3,7 +3,11 @@
     <section id="contact" class="contact">
       <div class="container">
         <div class="section-header">
-        <h2>Contacto</h2></div>
+        <h2>Contacto</h2>
+        <div class="section-divider">
+          <span></span>
+        </div>
+        </div>
         <div class="contact-container">
           <div class="contact-info">
             <div class="contact-card">
@@ -19,14 +23,21 @@
                 </div>
               </div>
               <div class="social-links">
-                <a href="#" class="social-link" v-for="(social, index) in socialLinks" :key="index">
+                <a
+                  v-for="(social, index) in socialLinks"
+                  :key="index"
+                  class="social-link"
+                  :href="social.href || '#'"
+                  target="_blank"
+                  rel="noopener"
+                >
                   <i :class="social.icon"></i>
                 </a>
               </div>
             </div>
             <div class="map-container">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106551.16548979707!2d-70.69995694462133!3d-33.47278123045241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662c5410425af2f%3A0x8475d53c400f0931!2sSantiago%2C%20Regi%C3%B3n%20Metropolitana%2C%20Chile!5e0!3m2!1ses!2s!4v1617997624428!5m2!1ses!2s" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3348.0857997583194!2d-71.5421984235469!3d-32.94874407199609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689dd3af7a2ae65%3A0x327b3202d800b3ad!2sLos%20Olivillos%20440%2C%202511044%20Conc%C3%B3n%2C%20Valpara%C3%ADso!5e0!3m2!1ses-419!2scl!4v1747700897885!5m2!1ses-419!2scl"
                 width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
               </iframe>
             </div>
@@ -72,15 +83,15 @@
           {
             icon: 'fas fa-map-marker-alt',
             title: 'Ubicación',
-            value: 'Av. Principal 123, Santiago, Chile',
+            value: 'Los Olivillos 440, Concón, Chile',
             isLink: false
           },
           {
             icon: 'fas fa-phone-alt',
             title: 'Teléfono',
-            value: '+569 1234 5678',
+            value: '+56 9 7466 6386',
             isLink: true,
-            href: 'tel:+56912345678'
+            href: 'tel:+56974666386'
           },
           {
             icon: 'fas fa-envelope',
@@ -97,10 +108,9 @@
           }
         ],
         socialLinks: [
-          { icon: 'fab fa-facebook-f' },
-          { icon: 'fab fa-twitter' },
+          { icon: 'fab fa-whatsapp' },
           { icon: 'fab fa-instagram' },
-          { icon: 'fab fa-linkedin-in' }
+          { icon: 'fab fa-linkedin-in',href:'https://www.linkedin.com/company/bebanova' }
         ]
       }
     },
@@ -140,15 +150,51 @@
     }
     .section-header {
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
     position: relative;
-    z-index: 1;}
-h2 {
+    z-index: 1;
+
+    h2 {
       font-size: 2.5rem;
       color: #1a1a2e;
       margin-bottom: 20px;
       position: relative;
       display: inline-block;
+    }
+
+    .section-divider {
+      width: 100%;
+      text-align: center;
+      position: relative;
+
+      span {
+        display: inline-block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #4169e1, #80b3ff);
+        border-radius: 4px;
+        position: relative;
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #4169e1;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        &::before {
+          left: -15px;
+        }
+
+        &::after {
+          right: -15px;
+        }
+      }
     }
   }
   
@@ -381,5 +427,5 @@ h2 {
     .contact-form, .contact-card {
       padding: 25px;
     }
-  }
+  }}
   </style>

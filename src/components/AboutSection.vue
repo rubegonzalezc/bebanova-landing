@@ -495,6 +495,27 @@ export default {
       height: 4px;
       background: linear-gradient(90deg, #4169e1, #80b3ff);
       border-radius: 4px;
+      position: relative;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #4169e1;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &::before {
+        left: -15px;
+      }
+
+      &::after {
+        right: -15px;
+      }
     }
   }
   .next-section-content.flex-row {

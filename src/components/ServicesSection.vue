@@ -1,7 +1,12 @@
 <template>
     <section class="services">
       <v-container>
-        <h2>Nuestros Servicios</h2>
+        <div class="section-header">
+          <h2>Nuestros Servicios</h2>
+          <div class="section-divider">
+            <span></span>
+          </div>
+        </div>
         <v-row class="justify-center">
           <v-col 
             v-for="(service, index) in services" 
@@ -252,11 +257,54 @@
       z-index: 0;
     }
     
-    h2 {
-      color: #1a1a2e;
-      margin-bottom: 70px;
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
       position: relative;
       z-index: 1;
+
+      h2 {
+        color: #1a1a2e;
+        margin-bottom: 18px;
+        position: relative;
+        z-index: 1;
+        font-size: 2.5rem;
+        display: inline-block;
+      }
+      .section-divider {
+        width: 100%;
+        text-align: center;
+        position: relative;
+        margin-bottom: 0;
+        span {
+          display: inline-block;
+          width: 80px;
+          height: 4px;
+          background: linear-gradient(90deg, #4169e1, #80b3ff);
+          border-radius: 4px;
+          position: relative;
+
+          &::before,
+          &::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4169e1;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+
+          &::before {
+            left: -15px;
+          }
+
+          &::after {
+            right: -15px;
+          }
+        }
+      }
     }
   }
   
@@ -409,6 +457,40 @@
     padding: 10px 10px 10px 10px;
     margin: 0;
   }
+   .section-divider {
+      width: 100%;
+      text-align: center;
+      position: relative;
+
+      span {
+        display: inline-block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #4169e1, #80b3ff);
+        border-radius: 4px;
+        position: relative;
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #4169e1;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        &::before {
+          left: -15px;
+        }
+
+        &::after {
+          right: -15px;
+        }
+      }
+    }
   
   .service-details ul li {
     position: relative;

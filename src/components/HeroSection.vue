@@ -41,7 +41,6 @@
                 >
                   {{ textModel[currentModelIndex] }}
                 </div>
-                <!-- Add arrows here -->
                 <button
                   v-if="modelSources.length > 1"
                   class="arrow left-arrow"
@@ -169,14 +168,14 @@
   
   .model-viewer-masked {
     z-index: 10;
-    -webkit-mask-image: radial-gradient(circle, rgba(65, 105, 225, 1) 70%, rgba(0, 0, 0, 0) 90%);
-    mask-image: radial-gradient(circle, rgba(65, 105, 225, 1) 70%, rgba(0, 0, 0, 0) 90%);
+    -webkit-mask-image: radial-gradient(circle, rgba(65, 105, 225, 1) 90%, rgba(0, 0, 0, 0) 100%);
+    mask-image: radial-gradient(circle, rgba(65, 105, 225, 1) 90%, rgba(0, 0, 0, 0) 100%);
     -webkit-mask-size: cover;
     mask-size: cover;
     opacity: 1;
     max-height: 70%;
-    max-width: 100%;
-    top: 10%;
+    max-width: 95%;
+    top:10%;
   }
   
   .main-image {

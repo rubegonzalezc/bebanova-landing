@@ -292,7 +292,7 @@ const initThree = () => {
   const height = container.clientHeight
 
   scene = new THREE.Scene()
-  camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000)
+  camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
   renderer = new THREE.WebGLRenderer({
   canvas: canvasRef.value,
   antialias: true,
@@ -601,7 +601,7 @@ const calculateModelTargets = (centerIndex: number, snap: boolean = false) => {
     if (numValidEntries === 0) return;
 
     const radius = props.curveRadius;
-    const mainModelYOffset = 1.0;
+    const mainModelYOffset = 1;
 
     let validIndexCounter = -1;
     const centerModelValidIndex = modelData.slice(0, centerIndex + 1).filter(d => d !== null).length - 1;

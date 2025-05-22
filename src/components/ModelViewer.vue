@@ -220,39 +220,6 @@ defineExpose({ nextModel, prevModel });
    will-change: transform;
 }
 
-.carousel-controls {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 25;
-  pointer-events: none;
-}
-
-.arrow {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 50%;
-  font-size: 1.5em;
-  pointer-events: auto;
-  z-index: 50;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.left-arrow {
-  left: -30px; }
-
-.right-arrow {
-  right: -30px;
-}
-
 .carousel-controls .model-info-dialog {
   position: absolute;
   bottom: -130px; 

@@ -41,9 +41,23 @@
                 >
                   {{ textModel[currentModelIndex] }}
                 </div>
+                <!-- Add arrows here -->
+                <button
+                  v-if="modelSources.length > 1"
+                  class="arrow left-arrow"
+                  @click="$refs.modelViewer.prevModel()"
+                  aria-label="Previous Model"
+                >&lt;</button>
+                <button
+                  v-if="modelSources.length > 1"
+                  class="arrow right-arrow"
+                  @click="$refs.modelViewer.nextModel()"
+                  aria-label="Next Model"
+                >&gt;</button>
                 <ModelViewer
-                  :modelSources="[`/3D/source/logo.glb`,`/3D/source/quest3.glb`,`/3D/source/brain.glb`,`/3D/source/ender3.glb`,`/3D/source/text.glb`]"
-                  :previewImg="[`/logo3D.png`,`/quest3.png`,`/AI.png`,`/ender3.png`,`/code.png`]"
+                  ref="modelViewer"
+                  :modelSources="modelSources"
+                  :previewImg="previewImg"
                   :textModel="textModel"
                   :enableScreenshot="false"
                   :modelDefaultSize="20"
@@ -77,6 +91,20 @@
           'Capacitaciones Inteligencia Artificial',
           'Capacitaciones Impresión 3D',
           'Apoyo en Programación'
+        ],
+        modelSources: [
+          '/3D/source/logo.glb',
+          '/3D/source/quest3.glb',
+          '/3D/source/brain.glb',
+          '/3D/source/ender3.glb',
+          '/3D/source/text.glb'
+        ],
+        previewImg: [
+          '/logo3D.png',
+          '/quest3.png',
+          '/AI.png',
+          '/ender3.png',
+          '/code.png'
         ]
       }
     },
@@ -290,5 +318,28 @@
       padding: 8px 12px;
       top: 85%;
     }
+  }
+
+  .arrow {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 1.5em;
+    pointer-events: auto;
+    z-index: 200;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .left-arrow {
+    left: -30px;
+  }
+
+  .right-arrow {
+    right: -30px;
   }
   </style>

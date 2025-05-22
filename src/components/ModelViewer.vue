@@ -119,6 +119,8 @@ const prevModel = () => {
     emit('modelIndexChanged', currentModelIndex.value); 
   }
 }
+
+defineExpose({ nextModel, prevModel });
 </script>
 
 <template>
@@ -129,9 +131,8 @@ const prevModel = () => {
     <div class="image-overlay" :class="{ 'fade-out': showModel }">
        <img :src="previewImg[0]" alt="Model Preview" class="preview-image" loading="lazy" />
     </div>    
+
     <div v-if="isMultiModel && shouldLoadModel" class="carousel-controls">
-      <button class="arrow left-arrow" @click="prevModel" aria-label="Previous Model">&lt;</button>
-      <button class="arrow right-arrow" @click="nextModel" aria-label="Next Model">&gt;</button>
     </div>
 
     <template v-if="shouldLoadModel">
@@ -225,14 +226,12 @@ const prevModel = () => {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   z-index: 25;
   pointer-events: none;
-  padding-bottom: 50px; /* Add padding to expand the container further down */
-  overflow: visible;
 }
 
-.carousel-controls .arrow {
+.arrow {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
@@ -241,21 +240,22 @@ const prevModel = () => {
   border-radius: 50%;
   font-size: 1.5em;
   pointer-events: auto;
+  z-index: 50;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-.carousel-controls .left-arrow {
-  position: absolute;
-  left: 10px;
-}
+.left-arrow {
+  left: -30px; }
 
-.carousel-controls .right-arrow {
-  position: absolute;
-  right: 10px;
+.right-arrow {
+  right: -30px;
 }
 
 .carousel-controls .model-info-dialog {
   position: absolute;
-  bottom: -130px; /* Move it further down */
+  bottom: -130px; 
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.5);
@@ -265,10 +265,9 @@ const prevModel = () => {
   font-size: 1em;
   pointer-events: auto;
   text-align: center;
-  max-width: 90%; /* Prevents the dialog from exceeding the container width */
-   /* Increase max-height to allow more text */
-  overflow-wrap: break-word; /* Wraps long words */
+  max-width: 90%; 
+  overflow-wrap: break-word; 
   word-wrap: break-word;
-  white-space: normal; /* Allows text to wrap */
+  white-space: normal; 
 }
 </style>

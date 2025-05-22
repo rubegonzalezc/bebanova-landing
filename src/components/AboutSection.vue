@@ -557,7 +557,7 @@ export default {
       max-width: 75%;
     }
     @media (max-width: 600px) {
-      max-width: 75vw; // Reduced from 95vw to 75vw
+      max-width: 75vw;
     }
   }
 
@@ -572,9 +572,9 @@ export default {
     gap: 18px;
     .text-block {
       margin-bottom: 0;
+      text-align: justify;
     }
     @media (max-width: 900px) {
-      text-align: left;
       padding: 0 8px;
       gap: 14px;
     }
@@ -607,7 +607,7 @@ export default {
       gap: 16px;
     }
     .next-section-image {
-      max-width: 75vw; // Reduced from 95vw to 75vw
+      max-width: 75vw; 
     }
     .next-section-text {
       font-size: 0.98rem;
@@ -616,7 +616,6 @@ export default {
   }
 }
 
-// Responsive adjustments
 @media (max-width: 992px) {
   .about-intro {
     flex-direction: column !important;

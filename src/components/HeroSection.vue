@@ -323,9 +323,9 @@
     background-color: rgb(0, 0, 0);
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 20px 15px;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 90%;
     font-size: 1.5em;
     pointer-events: auto;
     z-index: 200;

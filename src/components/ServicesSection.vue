@@ -44,7 +44,7 @@
                         :style="{ '--item-index': subIndex }"
                         class="sub-feature"
                       >
-                        <i class="fas fa-plus"></i> {{ sub }}
+                        <i class="fa-regular fa-circle" style="color: #572364;"></i> {{ sub }}
                       </li>
                     </ul>
                   </li>

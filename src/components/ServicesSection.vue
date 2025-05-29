@@ -44,7 +44,22 @@
                         :style="{ '--item-index': subIndex }"
                         class="sub-feature"
                       >
-                        <i class="fas fa-plus"></i> {{ sub }}
+                        <i class="fa-regular fa-circle" style="color: #572364;"></i> {{ sub }}
+                      </li>
+                      <li
+                        v-if="feature.courseUrl"
+                        class="sub-feature curso-url-wrapper"
+                        :style="{ '--item-index': feature.subfeatures.length }"
+                      >
+                        <a
+                          :href="feature.courseUrl"
+                          target="_blank"
+                          rel="noopener"
+                          class="url-curso-btn"
+                          @click.stop
+                        >
+                          <i class="fas fa-link"></i> Ver Curso
+                        </a>
                       </li>
                     </ul>
                   </li>
@@ -108,9 +123,10 @@
               {
                 name: 'Diseño de Cursos',
                 subfeatures: [
-                 'Curso para todas las edades y perfiles',
+                  'Curso para todas las edades y perfiles',
                   'Curso Práctico y Lúdico con IA',
-                ]
+                ],
+                courseUrl: 'https://www.canva.com/design/DAGorLs4dJA/56-OAFd7QlexHnbT48QyuQ/view?utm_content=DAGorLs4dJA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=haa819f2f38'
               },
               {
                 name: 'Servicios Personalizados',
@@ -138,7 +154,8 @@
                   'Cursos introductorios 3D',
                   'Cursos de modelado 3D',
                   'Cursos de impresión 3D avanzada'
-                ]
+                ],
+                courseUrl: 'https://www.canva.com/design/DAGoppV-qY8/2lXO7jrHlNxjtgZR0AkPVg/view?utm_content=DAGoppV-qY8&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h593c68476e'
               },
               {
                 name: 'Servicios Personalizados',
@@ -165,7 +182,8 @@
                   'Tours virtuales',
               'Experiencias VR inmersivas',
               'Simulaciones de entrenamiento',
-                ]
+                ],
+                courseUrl: 'https://www.canva.com/design/DAGoqDNmlQI/BPMnECNdjdysGaQdpu1uew/view?utm_content=DAGoqDNmlQI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hc085cc43d2'
               },
             
             ],
@@ -551,4 +569,47 @@
     overflow-wrap: break-word;
     word-break: break-word;
   }
+
+  .curso-url-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.url-curso-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 18px;
+  background: #eaf8ea;
+  border-radius: 8px;
+  color: #155724; // dark green text
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1em;
+  border: 2px solid #00FF00 ;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  cursor: pointer;
+
+  i {
+    margin-right: 8px;
+    font-size: 18px;
+    color: #155724; // dark green icon
+  }
+
+  &:hover {
+    background: #00FF00;
+    color: #fff;
+    i {
+      color: #fff;
+    }
+    border-color: #21b71c;
+  }
+}
   </style>

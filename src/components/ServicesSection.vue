@@ -126,7 +126,7 @@
                   'Curso para todas las edades y perfiles',
                   'Curso Práctico y Lúdico con IA',
                 ],
-                courseUrl: 'https://www.canva.com/design/DAGoqDNmlQI/BPMnECNdjdysGaQdpu1uew/view?utm_content=DAGoqDNmlQI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hc085cc43d2'
+                courseUrl: 'https://www.canva.com/design/DAGorLs4dJA/56-OAFd7QlexHnbT48QyuQ/view?utm_content=DAGorLs4dJA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=haa819f2f38'
               },
               {
                 name: 'Servicios Personalizados',
@@ -155,7 +155,7 @@
                   'Cursos de modelado 3D',
                   'Cursos de impresión 3D avanzada'
                 ],
-                courseUrl: 'https://www.canva.com/design/DAGoqDNmlQI/BPMnECNdjdysGaQdpu1uew/view?utm_content=DAGoqDNmlQI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hc085cc43d2'
+                courseUrl: 'https://www.canva.com/design/DAGoppV-qY8/2lXO7jrHlNxjtgZR0AkPVg/view?utm_content=DAGoppV-qY8&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h593c68476e'
               },
               {
                 name: 'Servicios Personalizados',

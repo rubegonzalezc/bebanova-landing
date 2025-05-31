@@ -151,9 +151,9 @@
               {
                 name: 'Diseño de Cursos',
                 subfeatures: [
-                  'Cursos introductorios 3D',
-                  'Cursos de modelado 3D',
-                  'Cursos de impresión 3D avanzada'
+                  'Curso introductorio 3D',
+                  'Curso de modelado 3D',
+                  'Curso de impresión 3D avanzada'
                 ],
                 courseUrl: 'https://www.canva.com/design/DAGoppV-qY8/2lXO7jrHlNxjtgZR0AkPVg/view?utm_content=DAGoppV-qY8&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h593c68476e'
               },
@@ -178,7 +178,7 @@
               {
                 name: 'Diseño de Cursos',
                 subfeatures: [
-                 'Cursos básico: Introducción a los usuarios a los conceptos básicos de la RV, el funcionamiento de los lentes y la navegación en entornos virtuales.',
+                 'Curso básico: Introducción a los usuarios a los conceptos básicos de la RV, el funcionamiento de los lentes y la navegación en entornos virtuales.',
                   'Tours virtuales',
               'Experiencias VR inmersivas',
               'Simulaciones de entrenamiento',

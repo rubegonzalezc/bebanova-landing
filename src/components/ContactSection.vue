@@ -60,7 +60,13 @@
                 <label for="message">Mensaje</label>
                 <textarea id="message" v-model="form.message" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
               </div>
-              <button type="submit" class="btn">Enviar mensaje</button>
+              <button type="submit" class="btn" :disabled="isSubmitting">
+                <span v-if="!isSubmitting">Enviar mensaje</span>
+                <span v-else>
+                  <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>
+                  Enviando...
+                </span>
+              </button>
             </form>
           </div>
         </div>
@@ -79,6 +85,7 @@
           subject: '',
           message: ''
         },
+        isSubmitting: false,
         contactMethods: [
           {
             icon: 'fas fa-map-marker-alt',
@@ -108,23 +115,163 @@
           }
         ],
         socialLinks: [
-          { icon: 'fab fa-whatsapp' },
-          { icon: 'fab fa-instagram' },
           { icon: 'fab fa-linkedin-in',href:'https://www.linkedin.com/company/bebanova' }
         ]
       }
     },
     methods: {
-      submitForm() {
-        // Simular envío del formulario
-        alert('Mensaje enviado correctamente. Nos pondremos en contacto contigo pronto.');
-        // Limpiar formulario
-        this.form = {
-          name: '',
-          email: '',
-          subject: '',
-          message: ''
-        };
+      async submitForm() {
+        if (this.isSubmitting) return;
+        
+        this.isSubmitting = true;
+        
+        try {
+          // Determinar la URL de la API según el entorno
+          const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3002/api/contact'
+            : 'https://api.bebanova.com/api/contact'; // Cambiar por tu URL de producción
+          
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.form)
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            // Mostrar mensaje de éxito con estilo mejorado
+            this.showSuccessMessage(result.message);
+            // Limpiar formulario
+            this.form = {
+              name: '',
+              email: '',
+              subject: '',
+              message: ''
+            };
+          } else {
+            // Mostrar errores de validación si existen
+            if (result.errors && result.errors.length > 0) {
+              const errorMessages = result.errors.map(error => error.msg).join('\\n');
+              this.showErrorMessage('Errores de validación:\\n' + errorMessages);
+            } else {
+              this.showErrorMessage(result.message || 'Error al enviar el mensaje');
+            }
+          }
+        } catch (error) {
+          console.error('Error al conectar con la API:', error);
+          this.showErrorMessage('Error de conexión. Por favor, verifica tu conexión a internet e intenta nuevamente.');
+        } finally {
+          this.isSubmitting = false;
+        }
+      },
+      
+      showSuccessMessage(message) {
+        // Crear elemento de notificación personalizada
+        const notification = document.createElement('div');
+        notification.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4169e1 0%, #1a1a2e 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            max-width: 400px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            animation: slideIn 0.3s ease-out;
+          ">
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+              <div style="
+                width: 24px;
+                height: 24px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 10px;
+              ">
+                ✓
+              </div>
+              <strong>¡Mensaje Enviado!</strong>
+            </div>
+            <p style="margin: 0; opacity: 0.9; line-height: 1.4;">${message}</p>
+          </div>
+          <style>
+            @keyframes slideIn {
+              from { transform: translateX(100%); opacity: 0; }
+              to { transform: translateX(0); opacity: 1; }
+            }
+          </style>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Remover notificación después de 5 segundos
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.style.animation = 'slideIn 0.3s ease-out reverse';
+            setTimeout(() => {
+              document.body.removeChild(notification);
+            }, 300);
+          }
+        }, 5000);
+      },
+      
+      showErrorMessage(message) {
+        // Crear elemento de notificación de error
+        const notification = document.createElement('div');
+        notification.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #dc3545 0%, #a71e2a 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            max-width: 400px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            animation: slideIn 0.3s ease-out;
+          ">
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+              <div style="
+                width: 24px;
+                height: 24px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 10px;
+              ">
+                ✕
+              </div>
+              <strong>Error</strong>
+            </div>
+            <p style="margin: 0; opacity: 0.9; line-height: 1.4; white-space: pre-line;">${message}</p>
+          </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Remover notificación después de 7 segundos
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.style.animation = 'slideIn 0.3s ease-out reverse';
+            setTimeout(() => {
+              document.body.removeChild(notification);
+            }, 300);
+          }
+        }, 7000);
       }
     }
   }
@@ -403,9 +550,17 @@
     cursor: pointer;
     display: inline-block;
     
-    &:hover {
+    &:hover:not(:disabled) {
       transform: translateY(-3px);
       box-shadow: 0 15px 25px rgba(65, 105, 225, 0.4);
+    }
+    
+    &:disabled {
+      background: linear-gradient(135deg, #a8a8a8 0%, #d0d0d0 100%);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      opacity: 0.7;
     }
   }
   

@@ -71,8 +71,8 @@
       return {
         currentYear: new Date().getFullYear(),
         socialLinks: [
-          { icon: 'fab fa-whatsapp' },
-          { icon: 'fab fa-instagram' },
+          { icon: 'fab fa-whatsapp', href:"https://wa.me/+56974666386" },
+          { icon: 'fab fa-instagram', href:"https://www.instagram.com/bebanovachile/" },
           { icon: 'fab fa-linkedin-in',href: 'https://www.linkedin.com/company/bebanova' }
         ],
         quickLinks: [
